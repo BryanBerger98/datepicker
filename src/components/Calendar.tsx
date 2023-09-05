@@ -7,6 +7,7 @@ import CalendarHead from './CalendarHead';
 import { WeekDay } from '@/utils/day.util';
 
 export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+	onMonthChange?: (date: Date) => void;
 	onSelectDate?: (date: Date) => void;
 	weekStartDay?: WeekDay;
 	defaultMonth?: Date;
@@ -15,6 +16,7 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	className,
+	onMonthChange,
 	onSelectDate,
 	defaultSelectedDate = new Date(),
 	defaultMonth = new Date(),
@@ -32,10 +34,16 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ selectedDate ]);
 
+	useEffect(() => {
+		if (onMonthChange) {
+			onMonthChange(currentDate);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ currentDate ]);
+
 	const handleClickDate = (date: Date) => setSelectedDate(date);
 
 	const handleGoToNextMonth = () => {
-		// setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()));
 		setCurrentDate((prevCurrentDate) => {
 			const newDate = new Date(prevCurrentDate.getFullYear(), prevCurrentDate.getMonth(), prevCurrentDate.getDate());
 			newDate.setMonth(prevCurrentDate.getMonth() + 1);
