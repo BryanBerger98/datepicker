@@ -14,6 +14,7 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 	defaultSelectedDate?: Date;
 	from?: Date;
 	to?: Date;
+	disableOutsideLimit?: boolean;
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
@@ -25,6 +26,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	weekStartDay = 'sunday',
 	from,
 	to,
+	disableOutsideLimit = false,
 	...props
 }, ref) => {
 
@@ -92,6 +94,9 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 									onClickDate={ handleClickDate }
 									selectedDate={ selectedDate }
 									currentDate={ currentDate }
+									disableOutsideLimit={ disableOutsideLimit }
+									to={ to }
+									from={ from }
 								/>
 							))
 					}
