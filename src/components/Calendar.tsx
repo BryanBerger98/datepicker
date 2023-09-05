@@ -12,6 +12,8 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 	weekStartDay?: WeekDay;
 	defaultMonth?: Date;
 	defaultSelectedDate?: Date;
+	from?: Date;
+	to?: Date;
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
@@ -21,6 +23,8 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	defaultSelectedDate = new Date(),
 	defaultMonth = new Date(),
 	weekStartDay = 'sunday',
+	from,
+	to,
 	...props
 }, ref) => {
 
@@ -45,6 +49,9 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 
 	const handleGoToNextMonth = () => {
 		setCurrentDate((prevCurrentDate) => {
+			if (to && to.getMonth() === prevCurrentDate.getMonth() && to.getFullYear() === prevCurrentDate.getFullYear()) {
+				return prevCurrentDate;
+			}
 			const newDate = new Date(prevCurrentDate.getFullYear(), prevCurrentDate.getMonth(), prevCurrentDate.getDate());
 			newDate.setMonth(prevCurrentDate.getMonth() + 1);
 			return newDate;
@@ -52,8 +59,10 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	};
 
 	const handleGoToPreviousMonth = () => {
-		// setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate()));
 		setCurrentDate((prevCurrentDate) => {
+			if (from && from.getMonth() === prevCurrentDate.getMonth() && from.getFullYear() === prevCurrentDate.getFullYear()) {
+				return prevCurrentDate;
+			}
 			const newDate = new Date(prevCurrentDate.getFullYear(), prevCurrentDate.getMonth(), prevCurrentDate.getDate());
 			newDate.setMonth(prevCurrentDate.getMonth() - 1);
 			console.log(newDate);
@@ -68,6 +77,8 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 				currentDate={ currentDate }
 				onGoToNextMonth={ handleGoToNextMonth }
 				onGoToPreviousMonth={ handleGoToPreviousMonth }
+				from={ from }
+				to={ to }
 			/>
 			<table className="w-full border-collapse space-y-1" role="grid">
 				<CalendarHead weekStartDay={ weekStartDay } />

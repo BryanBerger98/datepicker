@@ -4,9 +4,11 @@ type CalendarHeaderProps = {
 	currentDate: Date;
 	onGoToPreviousMonth: () => void;
 	onGoToNextMonth: () => void;
+	from?: Date;
+	to?: Date;
 };
 
-const CalendarHeader = ({ currentDate, onGoToNextMonth, onGoToPreviousMonth }: CalendarHeaderProps) => {
+const CalendarHeader = ({ currentDate, onGoToNextMonth, onGoToPreviousMonth, from, to }: CalendarHeaderProps) => {
 
 	return (
 		<div className="flex justify-center pt-1 relative items-center">
@@ -16,6 +18,7 @@ const CalendarHeader = ({ currentDate, onGoToNextMonth, onGoToPreviousMonth }: C
 				<div className="space-x-1 flex items-center">
 					<button
 						onClick={ onGoToPreviousMonth }
+						disabled={ from && from.getMonth() === currentDate.getMonth() && from.getFullYear() === currentDate.getFullYear() }
 						name="previous-month"
 						aria-label="Go to previous month"
 						className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
@@ -25,6 +28,7 @@ const CalendarHeader = ({ currentDate, onGoToNextMonth, onGoToPreviousMonth }: C
 					</button>
 					<button
 						onClick={ onGoToNextMonth }
+						disabled={ to && to.getMonth() === currentDate.getMonth() && to.getFullYear() === currentDate.getFullYear() }
 						name="next-month"
 						aria-label="Go to next month"
 						className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
