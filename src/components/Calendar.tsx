@@ -15,6 +15,7 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 	from?: Date;
 	to?: Date;
 	disableOutsideLimit?: boolean;
+	disableNavigation?: boolean;
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
@@ -27,6 +28,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	from,
 	to,
 	disableOutsideLimit = false,
+	disableNavigation = false,
 	...props
 }, ref) => {
 
@@ -50,6 +52,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	const handleClickDate = (date: Date) => setSelectedDate(date);
 
 	const handleGoToNextMonth = () => {
+		if (disableNavigation) return;
 		setCurrentDate((prevCurrentDate) => {
 			if (to && to.getMonth() === prevCurrentDate.getMonth() && to.getFullYear() === prevCurrentDate.getFullYear()) {
 				return prevCurrentDate;
@@ -61,13 +64,13 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	};
 
 	const handleGoToPreviousMonth = () => {
+		if (disableNavigation) return;
 		setCurrentDate((prevCurrentDate) => {
 			if (from && from.getMonth() === prevCurrentDate.getMonth() && from.getFullYear() === prevCurrentDate.getFullYear()) {
 				return prevCurrentDate;
 			}
 			const newDate = new Date(prevCurrentDate.getFullYear(), prevCurrentDate.getMonth(), prevCurrentDate.getDate());
 			newDate.setMonth(prevCurrentDate.getMonth() - 1);
-			console.log(newDate);
 			return newDate;
 		});
 	};
@@ -75,34 +78,35 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	return (
 		<>
 			<div className={ cn('flex flex-col space-y-4 rounded-md border p-3', className) } { ...props } ref={ref}>
-			<CalendarHeader
-				currentDate={ currentDate }
-				onGoToNextMonth={ handleGoToNextMonth }
-				onGoToPreviousMonth={ handleGoToPreviousMonth }
-				from={ from }
-				to={ to }
-			/>
-			<table className="w-full border-collapse space-y-1" role="grid">
-				<CalendarHead weekStartDay={ weekStartDay } />
-				<tbody>
-					{
-						buildCalendarGrid(currentDate.getMonth(), currentDate.getFullYear(), { weekStartDay })
-							.map((week, index) => (
-								<Week
-									key={ index }
-									week={ week }
-									onClickDate={ handleClickDate }
-									selectedDate={ selectedDate }
-									currentDate={ currentDate }
-									disableOutsideLimit={ disableOutsideLimit }
-									to={ to }
-									from={ from }
-								/>
-							))
-					}
-				</tbody>
-			</table>
-		</div>
+				<CalendarHeader
+					currentDate={ currentDate }
+					onGoToNextMonth={ handleGoToNextMonth }
+					onGoToPreviousMonth={ handleGoToPreviousMonth }
+					from={ from }
+					to={ to }
+					disableNavigation={ disableNavigation }
+				/>
+				<table className="w-full border-collapse space-y-1" role="grid">
+					<CalendarHead weekStartDay={ weekStartDay } />
+					<tbody>
+						{
+							buildCalendarGrid(currentDate.getMonth(), currentDate.getFullYear(), { weekStartDay })
+								.map((week, index) => (
+									<Week
+										key={ index }
+										week={ week }
+										onClickDate={ handleClickDate }
+										selectedDate={ selectedDate }
+										currentDate={ currentDate }
+										disableOutsideLimit={ disableOutsideLimit }
+										to={ to }
+										from={ from }
+									/>
+								))
+						}
+					</tbody>
+				</table>
+			</div>
 		</>
 	);
 });
