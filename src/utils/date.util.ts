@@ -1,46 +1,38 @@
 export const getDateMonth = (date: Date) => date.getMonth() + 1;
+import dayjs, { Dayjs } from 'dayjs';
 
-export const getLastDatesOfDaysOfPreviousMonth = (month: number, year: number) => {
-	const lastDayOfPreviousMonth = new Date(year, month - 2, 0).getDate();
-	const lastDaysOfPreviousMonth = [];
-	for (let i = 0; i < new Date(year, month - 1, 1).getDay(); i++) {
-		lastDaysOfPreviousMonth.push(new Date(year, month - 2, lastDayOfPreviousMonth - i));
-	}
-	return lastDaysOfPreviousMonth.reverse();
+type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=Dimanche, 1=Lundi, 2=Mardi, ..., 6=Samedi
+
+export const getWeeksInMonth = (
+  year: number,
+  month: number,
+  weekStartDay: WeekStartDay = 0
+): number => {
+  const firstDayOfMonth: Dayjs = dayjs().year(year).month(month).date(1);
+  const lastDayOfMonth: Dayjs = firstDayOfMonth.endOf('month');
+  const startOfWeek: number = firstDayOfMonth.day();
+  const daysInMonth: number = lastDayOfMonth.date();
+  const daysToAdd: number = (startOfWeek - weekStartDay + 7) % 7;
+  const totalDays: number = daysInMonth + daysToAdd;
+  const weeksInMonth: number = Math.ceil(totalDays / 7);
+  return weeksInMonth;
 };
 
-// OK
-export const getNumberOfWeeksInMonth = (month: number, year: number) => {
-	const firstDateOfMonth = new Date(year, month - 1, 1); // FIRST DATE OF MONTH
-	const firstDayOfMonth = firstDateOfMonth.getDay();
-	const lastDateOfMonth = new Date(year, month, 0); // LAST DATE OF MONTH
-	const lastDayOfMonth = lastDateOfMonth.getDay();
-	const numberOfWeeksInMonth = Math.ceil((firstDayOfMonth + lastDateOfMonth.getDate() + (6 - lastDayOfMonth)) / 7);
-	return numberOfWeeksInMonth;
-};
+export const getDatesInMonthWeek = (
+	weekNumber: number,
+	month: number,
+	year: number,
+	weekStartDay: WeekStartDay = 0
+  ): Dayjs[] => {
+	const firstDayOfMonth: Dayjs = dayjs().year(year).month(month).date(1);
+	const startDayOfWeek: number = (firstDayOfMonth.day() - weekStartDay + 7) % 7;
+	const startDate: Dayjs = firstDayOfMonth.add(weekNumber - 1, 'week').subtract(startDayOfWeek, 'day');
+	const weekDates: Dayjs[] = [];
 
-export const getDatesInMonthWeek = (week: number, month: number, year: number): Date[] => {
-	const firstDayOfMonthDate = new Date(year, month - 1, 1);
-	const firstDayOfMonth = firstDayOfMonthDate.getDay();
-	const firstDateOfMonth = firstDayOfMonthDate.getDate();
-	// const lastDateOfMonth = new Date(year, month, 0).getDate();
-	const lastDayOfMonth = new Date(year, month, 0).getDay();
-	const lastDatesOfPreviousMonth = getLastDatesOfDaysOfPreviousMonth(month, year);
-	const datesInMonthWeek = [];
-	const numberOfWeeksInMonth = getNumberOfWeeksInMonth(month, year);
 	for (let i = 0; i < 7; i++) {
-		// IF WEEK IS 1 AND INDEX IS LESS THAN FIRST DAY OF MONTH
-		if (week === 1 && i < firstDayOfMonth) {
-			// ADD LAST DATES OF PREVIOUS MONTH
-			datesInMonthWeek.push(lastDatesOfPreviousMonth[i]);
-			// ELSE IF WEEK IS 5 AND INDEX IS GREATER THAN LAST DAY OF MONTH
-		} else if (week === numberOfWeeksInMonth && i > lastDayOfMonth) {
-			// ADD FIRST DATES OF NEXT MONTH
-			datesInMonthWeek.push(new Date(year, month, i - lastDayOfMonth));
-		} else {
-			// ADD DATES IN MONTH
-			datesInMonthWeek.push(new Date(year, month - 1, firstDateOfMonth + (week - 1) * 7 + i - firstDayOfMonth));
-		}
+		const currentDate: Dayjs = startDate.add(i, 'day');
+		weekDates.push(currentDate);
 	}
-	return datesInMonthWeek.filter(date => date);
+
+	return weekDates;
 };

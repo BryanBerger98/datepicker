@@ -6,7 +6,7 @@ function App() {
   return (
 	<>
 		<div className="flex p-8">
-			<Calendar />
+			<Calendar weekStartDay="monday" />
 		</div>
 	</>
   )
