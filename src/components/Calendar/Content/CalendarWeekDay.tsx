@@ -27,8 +27,6 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 		return false;
 	};
 
-	// console.log(selected);
-
 	return (
 		<td
 			onClick={ handleClickDate(dayDate) }

@@ -12,13 +12,13 @@ function App() {
 			<div className="flex flex-col gap-4">
 				<h2 className="text-xl font-semibold">Simple calendar</h2>
 				<div className="flex">
-					{/* <SimpleCalendarDemo /> */}
+					<SimpleCalendarDemo />
 				</div>
 			</div>
 			<div className="flex flex-col gap-4">
 				<h2 className="text-xl font-semibold">Multi months calendar</h2>
 				<div className="flex">
-					{/* <MultiMonthsCalendarDemo /> */}
+					<MultiMonthsCalendarDemo />
 				</div>
 			</div>
 			<div className="flex flex-col gap-4">

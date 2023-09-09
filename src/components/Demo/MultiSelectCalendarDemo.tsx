@@ -3,6 +3,7 @@ import Calendar from '../Calendar';
 
 const MultiSelectCalendarDemo = () => {
 
+	// FIXME: selected prop does not inherit type from mode prop
 	return (
 		<Calendar weekStartDay="monday" mode="multiple" className="rounded-md border p-3">
 			<Calendar.Header className="relative">

@@ -10,7 +10,7 @@ import CalendarGrid from './Content/CalendarGrid';
 
 type CalendarMode = 'single' | 'multiple' | 'range';
 type DateSelection<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ];
-type DateSelectedProp<T extends CalendarMode> = DateSelection<T> | undefined;
+type DateSelectedProp<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ] | undefined;
 type SelectDateHandler<T extends CalendarMode, S extends DateSelectedProp<T>> = (value: S extends undefined ? DateSelection<T> : Date) => void;
 
 type CalendarContextValue<T extends CalendarMode> = {
@@ -30,18 +30,43 @@ type CalendarContextValue<T extends CalendarMode> = {
 
 export const CalendarContext = createContext<CalendarContextValue<CalendarMode> | null>(null);
 
-type CalendarProps<T extends CalendarMode, S extends DateSelectedProp<T>> = Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> & {
-	mode?: CalendarMode;
-	defaultSelected?: DateSelection<T>;
-	defaultMonth?: Date;
-	selected?: S;
-	onSelect?: SelectDateHandler<T, S>;
+interface BaseCalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
 	from?: Date;
 	to?: Date;
+	defaultMonth?: Date;
 	disableOutsideLimit?: boolean;
 	disableNavigation?: boolean;
 	weekStartDay?: WeekDay;
-};
+	min: never;
+	max: never;
+}
+
+interface SingleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+	mode?: 'single';
+	defaultSelected?: Date;
+	selected?: Date;
+	onSelect?: SelectDateHandler<'single', DateSelectedProp<'single'>>;
+}
+
+interface MultipleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+	mode: 'multiple';
+	defaultSelected?: Date[];
+	selected?: Date[];
+	onSelect?: SelectDateHandler<'multiple', DateSelectedProp<'multiple'>>;
+	min?: number;
+	max?: number;
+}
+
+interface RangeCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+	mode: 'range';
+	defaultSelected?: [ Date, Date ];
+	selected?: [ Date, Date ];
+	onSelect?: SelectDateHandler<'range', DateSelectedProp<'range'>>;
+	min?: number;
+	max?: number;
+}
+
+type CalendarProps = SingleCalendarProps | MultipleCalendarProps | RangeCalendarProps;
 
 type CalendarStatic = {
 	Header: typeof CalendarHeader;
@@ -52,9 +77,9 @@ type CalendarStatic = {
 	Grid: typeof CalendarGrid;
 }
 
-type CalendarComponent<T extends CalendarMode, S extends DateSelectedProp<T>> = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps<T, S>> & RefAttributes<HTMLDivElement>> & CalendarStatic;
+type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps & RefAttributes<HTMLDivElement>>> & CalendarStatic;
 
-const CalendarInner = <T extends CalendarMode, S extends DateSelectedProp<T>>({
+const CalendarInner = ({
 	children,
 	defaultMonth = new Date(),
 	mode = 'single',
@@ -68,7 +93,9 @@ const CalendarInner = <T extends CalendarMode, S extends DateSelectedProp<T>>({
 	weekStartDay = 'sunday',
 	className,
 	...props
-}: CalendarProps<T, S>, ref: ForwardedRef<HTMLDivElement>) => {
+}: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
+
+	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : { min: undefined, max: undefined };
 
 	const isControlled = typeof selectedFromProps != 'undefined';
 	const defaultSelectedFromProps: DateSelection<typeof mode> = mode === 'single' ? new Date() : mode === 'multiple' ? [ new Date() ] : [ new Date(), new Date() ];
@@ -90,10 +117,13 @@ const CalendarInner = <T extends CalendarMode, S extends DateSelectedProp<T>>({
 				}
 				if (Array.isArray(prevSelected)) {
 					if (mode === 'multiple') {
+						// const { min, max } = props as MultipleCalendarProps;
 						const index = prevSelected.findIndex((d) => d.getDate() === date.getDate() && d.getMonth() === date.getMonth() && d.getFullYear() === date.getFullYear());
 						if (index === -1) {
+							if (max && prevSelected.length >= max) return prevSelected;
 							return [ ...prevSelected, date ];
 						} else {
+							if (min && prevSelected.length <= min) return prevSelected;
 							return prevSelected.filter((_, i) => i !== index);
 						}
 					}
@@ -114,7 +144,7 @@ const CalendarInner = <T extends CalendarMode, S extends DateSelectedProp<T>>({
 				return prevSelected
 			});
 		}
-	}, [ isControlled, onSelect, mode ]);
+	}, [ isControlled, onSelect, mode, min, max ]);
 
 	useEffect(() => {
 		if (!isControlled) {
@@ -194,7 +224,7 @@ const CalendarInner = <T extends CalendarMode, S extends DateSelectedProp<T>>({
 	);
 };
 
-const Calendar = forwardRef<HTMLDivElement, CalendarProps<CalendarMode, DateSelectedProp<CalendarMode>>>(CalendarInner) as CalendarComponent<CalendarMode, DateSelectedProp<CalendarMode>>;
+const Calendar = forwardRef<HTMLDivElement, CalendarProps>(CalendarInner) as CalendarComponent;
 
 Calendar.displayName = 'Calendar';
 
