@@ -27,6 +27,8 @@ type CalendarContextValue<T extends CalendarMode> = {
 	onGoToNextMonth: (skip?: number) => () => void;
 	onGoToPreviousMonth: (skip?: number) => () => void;
 	weekStartDay: WeekDay;
+	min?: number;
+	max?: number;
 };
 
 export const CalendarContext = createContext<CalendarContextValue<CalendarMode> | null>(null);
@@ -131,12 +133,10 @@ const CalendarInner = ({
 					}
 					if (mode === 'range') {
 						const [ prevStartDate ] = prevSelected;
-
 						if (dateRangeLastSelected.current === 'start') {
 							dateRangeLastSelected.current = 'end';
 							return [ date, date ];
 						}
-
 						if (dateRangeLastSelected.current === 'end') {
 							dateRangeLastSelected.current = 'start';
 							if (isBefore(prevStartDate, date)) {
@@ -145,7 +145,6 @@ const CalendarInner = ({
 								return [ date, prevStartDate || date ];
 							}
 						}
-
 						return [ date, date ];
 					}
 				}
@@ -204,6 +203,8 @@ const CalendarInner = ({
 		onGoToNextMonth: handleGoToNextMonth,
 		onGoToPreviousMonth: handleGoToPreviousMonth,
 		weekStartDay,
+		min,
+		max
 	}), [
 		mode,
 		handleSelectDate,
@@ -217,6 +218,8 @@ const CalendarInner = ({
 		handleGoToNextMonth,
 		handleGoToPreviousMonth,
 		weekStartDay,
+		min,
+		max,
 	]);
 
 	return (

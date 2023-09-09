@@ -4,7 +4,7 @@ import Calendar from '../Calendar';
 const RangeCalendarDemo = () => {
 
 	return (
-		<Calendar weekStartDay="monday" mode="range" className="rounded-md border p-3">
+		<Calendar weekStartDay="monday" mode="range" className="rounded-md border p-3" min={3} max={5}>
 			<Calendar.Header className="relative">
 				<Calendar.Title />
 				<div className="space-x-1 flex items-center">

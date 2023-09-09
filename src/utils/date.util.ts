@@ -50,6 +50,12 @@ export const isInDateRange = (
 	return dateToCheckWithoutTime.isBetween(startDateWithoutTime, endDateWithoutTime, 'day', '[]');
 };
 
+export const getDateRangeLength = (startDate: Date, endDate: Date): number => {
+	const startDateWithoutTime = dayjs(startDate).startOf('day');
+	const endDateWithoutTime = dayjs(endDate).startOf('day');
+	return endDateWithoutTime.diff(startDateWithoutTime, 'day') + 1;
+};
+
 export const isBefore = (dateToCheck: Date, date: Date): boolean => {
 	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
 	const dateWithoutTime = dayjs(date).startOf('day');
@@ -69,4 +75,12 @@ export const isNearestTo = (dateToCheck: Date, date: Date, date2: Date): 'date1'
 	const diff1 = Math.abs(dateToCheckWithoutTime.diff(dateWithoutTime, 'day'));
 	const diff2 = Math.abs(dateToCheckWithoutTime.diff(date2WithoutTime, 'day'));
 	return diff1 < diff2 ? 'date1' : 'date2';
+};
+
+export const addDaysToDate = (date: Date, days: number): Date => {
+	return dayjs(date).add(days, 'day').toDate();
+};
+
+export const substractDaysToDate = (date: Date, days: number): Date => {
+	return dayjs(date).subtract(days, 'day').toDate();
 };
