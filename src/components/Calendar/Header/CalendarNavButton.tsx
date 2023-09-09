@@ -4,9 +4,10 @@ import { cn } from '@/utils/ui.util';
 
 type CalendarNavButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	direction: 'previous' | 'next';
+	skip?: number;
 };
 
-const CalendarNavButton = ({ children, direction, className, ...props }: CalendarNavButtonProps) => {
+const CalendarNavButton = ({ children, direction, className, skip = 0, ...props }: CalendarNavButtonProps) => {
 
 	const { currentDate, to, from, onGoToNextMonth, onGoToPreviousMonth, disableNavigation } = useCalendar();
 
@@ -18,7 +19,7 @@ const CalendarNavButton = ({ children, direction, className, ...props }: Calenda
 
 	return (
 		<button
-			onClick={ direction === 'previous' ? onGoToPreviousMonth : onGoToNextMonth }
+			onClick={ direction === 'previous' ? onGoToPreviousMonth(skip) : onGoToNextMonth(skip) }
 			disabled={ disabledStatus }
 			name="previous-month"
 			aria-label={ direction === 'previous' ? 'Go to previous month' : 'Go to next month' }

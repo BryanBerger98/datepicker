@@ -4,11 +4,9 @@ import { ForwardRefExoticComponent, HTMLAttributes, PropsWithoutRef, RefAttribut
 import CalendarHeader from './Header/CalendarHeader';
 import CalendarTitle from './Header/CalendarTitle';
 import CalendarNavButton from './Header/CalendarNavButton';
-import CalendarContent from './Content/CalendarContenxt';
+import CalendarContent from './Content/CalendarContent';
 import CalendarHead from './Content/CalendarHead';
 import CalendarGrid from './Content/CalendarGrid';
-import CalendarWeek from './Content/CalendarWeek';
-import CalendarWeekDay from './Content/CalendarWeekDay';
 
 type CalendarContextValue = {
 	onSelectDate: (date: Date) => void;
@@ -19,8 +17,8 @@ type CalendarContextValue = {
 	to?: Date;
 	disableOutsideLimit?: boolean;
 	disableNavigation?: boolean;
-	onGoToNextMonth: () => void;
-	onGoToPreviousMonth: () => void;
+	onGoToNextMonth: (skip?: number) => () => void;
+	onGoToPreviousMonth: (skip?: number) => () => void;
 	weekStartDay: WeekDay;
 };
 
@@ -45,8 +43,6 @@ type CalendarStatic = {
 	Content: typeof CalendarContent;
 	Head: typeof CalendarHead;
 	Grid: typeof CalendarGrid;
-	Week: typeof CalendarWeek;
-	WeekDay: typeof CalendarWeekDay;
 }
 
 type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps> & RefAttributes<HTMLDivElement>> & CalendarStatic;
@@ -86,26 +82,26 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 		setCurrentDate(date);
 	}, []);
 
-	const handleGoToNextMonth = useCallback(() => {
+	const handleGoToNextMonth = useCallback((skip = 0) => () => {
 		if (disableNavigation) return;
 		setCurrentDate((prevCurrentDate) => {
 			if (to && to.getMonth() === prevCurrentDate.getMonth() && to.getFullYear() === prevCurrentDate.getFullYear()) {
 				return prevCurrentDate;
 			}
 			const newDate = new Date(prevCurrentDate.getFullYear(), prevCurrentDate.getMonth(), prevCurrentDate.getDate());
-			newDate.setMonth(prevCurrentDate.getMonth() + 1);
+			newDate.setMonth(prevCurrentDate.getMonth() + (skip + 1));
 			return newDate;
 		});
 	}, [ disableNavigation, to ]);
 
-	const handleGoToPreviousMonth = useCallback(() => {
+	const handleGoToPreviousMonth = useCallback((skip = 0) => () => {
 		if (disableNavigation) return;
 		setCurrentDate((prevCurrentDate) => {
 			if (from && from.getMonth() === prevCurrentDate.getMonth() && from.getFullYear() === prevCurrentDate.getFullYear()) {
 				return prevCurrentDate;
 			}
 			const newDate = new Date(prevCurrentDate.getFullYear(), prevCurrentDate.getMonth(), prevCurrentDate.getDate());
-			newDate.setMonth(prevCurrentDate.getMonth() - 1);
+			newDate.setMonth(prevCurrentDate.getMonth() - (skip + 1));
 			return newDate;
 		});
 	}, [ disableNavigation, from ]);
@@ -157,7 +153,5 @@ Calendar.NavButton = CalendarNavButton;
 Calendar.Content = CalendarContent;
 Calendar.Head = CalendarHead;
 Calendar.Grid = CalendarGrid;
-Calendar.Week = CalendarWeek;
-Calendar.WeekDay = CalendarWeekDay;
 
 export default Calendar;

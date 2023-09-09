@@ -1,20 +1,34 @@
 import { buildCalendarGrid } from '@/utils/calendar.utils';
 import useCalendar from '../useCalendar';
-import { HTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes } from 'react';
+import CalendarWeek from './CalendarWeek';
 
 type CalendarGridProps = HTMLAttributes<HTMLTableSectionElement> & {
-	renderWeeks: ({ week, index }: { week: Date[], index: number }) => ReactNode;
+	monthIndex?: number
+	weekClassName?: string;
+	dayClassName?: string;
 }
 
-const CalendarGrid = ({ renderWeeks, ...props }: CalendarGridProps) => {
+const CalendarGrid = ({ monthIndex = 0, weekClassName, dayClassName, ...props }: CalendarGridProps) => {
 
 	const { currentDate, weekStartDay } = useCalendar();
+
+	const date = new Date(currentDate);
+	date.setMonth(date.getMonth() + monthIndex);
 
 	return (
 		<tbody { ...props }>
 			{
-				buildCalendarGrid(currentDate.getMonth(), currentDate.getFullYear(), { weekStartDay })
-					.map((week, index) => renderWeeks({ week, index }))
+				buildCalendarGrid(date.getMonth(), date.getFullYear(), { weekStartDay })
+				.map((week, index) => (
+					<CalendarWeek
+						week={ week }
+						key={ index }
+						className={ weekClassName }
+						dayClassName={ dayClassName }
+						currentDate={ date }
+					/>
+				))
 			}
 		</tbody>
 	);

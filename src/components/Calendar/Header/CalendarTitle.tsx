@@ -4,15 +4,19 @@ import useCalendar from '../useCalendar';
 
 type CalendarTitleProps = HTMLAttributes<HTMLDivElement> & {
 	children?: ReactNode;
+	monthIndex?: number;
 };
 
-const CalendarTitle = ({ children, className, ...props }: CalendarTitleProps) => {
+const CalendarTitle = ({ children, className, monthIndex = 0, ...props }: CalendarTitleProps) => {
 
 	const { currentDate } = useCalendar();
 
+	const date = new Date(currentDate);
+	date.setMonth(date.getMonth() + monthIndex);
+
 	return (
 		<div className={ cn('text-sm font-medium', className)} role="presentation" aria-live='polite' { ...props }>
-			{ children ? children : currentDate.toLocaleString('default', { month: 'long', year: 'numeric' }) }
+			{ children ? children : date.toLocaleString('default', { month: 'long', year: 'numeric' }) }
 		</div>
 	);
 };
