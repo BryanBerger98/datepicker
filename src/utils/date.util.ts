@@ -1,7 +1,9 @@
 export const getDateMonth = (date: Date) => date.getMonth() + 1;
 import dayjs, { Dayjs } from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+dayjs.extend(isBetween);
 
-type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=Dimanche, 1=Lundi, 2=Mardi, ..., 6=Samedi
+type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const getWeeksInMonth = (
   year: number,
@@ -35,4 +37,36 @@ export const getDatesInMonthWeek = (
 	}
 
 	return weekDates;
+};
+
+export const isInDateRange = (
+	dateToCheck: Date,
+	startDate?: Date,
+	endDate?: Date
+): boolean => {
+	const startDateWithoutTime = dayjs(startDate).startOf('day');
+	const endDateWithoutTime = dayjs(endDate).startOf('day');
+	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
+	return dateToCheckWithoutTime.isBetween(startDateWithoutTime, endDateWithoutTime, 'day', '[]');
+};
+
+export const isBefore = (dateToCheck: Date, date: Date): boolean => {
+	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
+	const dateWithoutTime = dayjs(date).startOf('day');
+	return dateToCheckWithoutTime.isBefore(dateWithoutTime, 'day');
+};
+
+export const isSame = (dateToCheck: Date, date: Date): boolean => {
+	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
+	const dateWithoutTime = dayjs(date).startOf('day');
+	return dateToCheckWithoutTime.isSame(dateWithoutTime, 'day');
+};
+
+export const isNearestTo = (dateToCheck: Date, date: Date, date2: Date): 'date1' | 'date2' => {
+	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
+	const dateWithoutTime = dayjs(date).startOf('day');
+	const date2WithoutTime = dayjs(date2).startOf('day');
+	const diff1 = Math.abs(dateToCheckWithoutTime.diff(dateWithoutTime, 'day'));
+	const diff2 = Math.abs(dateToCheckWithoutTime.diff(date2WithoutTime, 'day'));
+	return diff1 < diff2 ? 'date1' : 'date2';
 };

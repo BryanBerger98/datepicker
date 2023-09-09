@@ -1,12 +1,13 @@
 import { WeekDay } from '@/utils/day.util';
 import { cn } from '@/utils/ui.util';
-import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import CalendarHeader from './Header/CalendarHeader';
 import CalendarTitle from './Header/CalendarTitle';
 import CalendarNavButton from './Header/CalendarNavButton';
 import CalendarContent from './Content/CalendarContent';
 import CalendarHead from './Content/CalendarHead';
 import CalendarGrid from './Content/CalendarGrid';
+import { isBefore } from '@/utils/date.util';
 
 type CalendarMode = 'single' | 'multiple' | 'range';
 type DateSelection<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ];
@@ -96,9 +97,10 @@ const CalendarInner = ({
 }: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
 
 	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : { min: undefined, max: undefined };
+	const dateRangeLastSelected = useRef<'start' | 'end'>('start');
 
 	const isControlled = typeof selectedFromProps != 'undefined';
-	const defaultSelectedFromProps: DateSelection<typeof mode> = mode === 'single' ? new Date() : mode === 'multiple' ? [ new Date() ] : [ new Date(), new Date() ];
+	const defaultSelectedFromProps: DateSelection<typeof mode> = mode === 'single' ? new Date() : mode === 'multiple' ? [ new Date() ] : [];
 
 	const [ internalSelectedDate, setInternalSelectedDate ] = useState<DateSelection<typeof mode>>(defaultSelected || defaultSelectedFromProps);
 	const [ currentDate, setCurrentDate ] = useState<Date>(defaultMonth);
@@ -128,17 +130,23 @@ const CalendarInner = ({
 						}
 					}
 					if (mode === 'range') {
-						if (prevSelected.length === 0) {
-							return [ date, date ];
-						} else if (prevSelected.length === 1) {
-							if (date.getTime() < prevSelected[0].getTime()) {
-								return [ date, prevSelected[0] ];
-							} else {
-								return [ prevSelected[0], date ];
-							}
-						} else {
+						const [ prevStartDate ] = prevSelected;
+
+						if (dateRangeLastSelected.current === 'start') {
+							dateRangeLastSelected.current = 'end';
 							return [ date, date ];
 						}
+
+						if (dateRangeLastSelected.current === 'end') {
+							dateRangeLastSelected.current = 'start';
+							if (isBefore(prevStartDate, date)) {
+								return [ prevStartDate, date ];
+							} else {
+								return [ date, prevStartDate || date ];
+							}
+						}
+
+						return [ date, date ];
 					}
 				}
 				return prevSelected
