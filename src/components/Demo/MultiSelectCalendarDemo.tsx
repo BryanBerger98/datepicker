@@ -1,10 +1,11 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Calendar from '../Calendar';
 
-const SimpleCalendarDemo = () => {
+const MultiSelectCalendarDemo = () => {
 
+	// FIXME: selected prop does not inherit type from mode prop
 	return (
-		<Calendar weekStartDay="monday" className="rounded-md border p-3">
+		<Calendar weekStartDay="monday" mode="multiple" className="rounded-md border p-3">
 			<Calendar.Header className="relative">
 				<Calendar.Title />
 				<div className="space-x-1 flex items-center">
@@ -24,4 +25,4 @@ const SimpleCalendarDemo = () => {
 	);
 };
 
-export default SimpleCalendarDemo;
+export default MultiSelectCalendarDemo;

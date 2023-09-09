@@ -1,6 +1,6 @@
 import { WeekDay } from '@/utils/day.util';
 import { cn } from '@/utils/ui.util';
-import { ForwardRefExoticComponent, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useMemo, useState } from 'react';
+import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import CalendarHeader from './Header/CalendarHeader';
 import CalendarTitle from './Header/CalendarTitle';
 import CalendarNavButton from './Header/CalendarNavButton';
@@ -8,9 +8,15 @@ import CalendarContent from './Content/CalendarContent';
 import CalendarHead from './Content/CalendarHead';
 import CalendarGrid from './Content/CalendarGrid';
 
-type CalendarContextValue = {
-	onSelectDate: (date: Date) => void;
-	selectedDate: Date;
+type CalendarMode = 'single' | 'multiple' | 'range';
+type DateSelection<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ];
+type DateSelectedProp<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ] | undefined;
+type SelectDateHandler<T extends CalendarMode, S extends DateSelectedProp<T>> = (value: S extends undefined ? DateSelection<T> : Date) => void;
+
+type CalendarContextValue<T extends CalendarMode> = {
+	onSelect: (value: Date) => void;
+	mode: CalendarMode;
+	selected: DateSelection<T>;
 	currentDate: Date;
 	onChangeCurrentDate: (date: Date) => void;
 	from?: Date;
@@ -22,19 +28,45 @@ type CalendarContextValue = {
 	weekStartDay: WeekDay;
 };
 
-export const CalendarContext = createContext<CalendarContextValue | null>(null);
+export const CalendarContext = createContext<CalendarContextValue<CalendarMode> | null>(null);
 
-type CalendarProps = HTMLAttributes<HTMLDivElement> & {
-	defaultSelectedDate?: Date;
-	defaultMonth?: Date;
-	selectedDate?: Date;
-	onSelectDate?: (date: Date) => void;
+interface BaseCalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
 	from?: Date;
 	to?: Date;
+	defaultMonth?: Date;
 	disableOutsideLimit?: boolean;
 	disableNavigation?: boolean;
 	weekStartDay?: WeekDay;
-};
+	min: never;
+	max: never;
+}
+
+interface SingleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+	mode?: 'single';
+	defaultSelected?: Date;
+	selected?: Date;
+	onSelect?: SelectDateHandler<'single', DateSelectedProp<'single'>>;
+}
+
+interface MultipleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+	mode: 'multiple';
+	defaultSelected?: Date[];
+	selected?: Date[];
+	onSelect?: SelectDateHandler<'multiple', DateSelectedProp<'multiple'>>;
+	min?: number;
+	max?: number;
+}
+
+interface RangeCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+	mode: 'range';
+	defaultSelected?: [ Date, Date ];
+	selected?: [ Date, Date ];
+	onSelect?: SelectDateHandler<'range', DateSelectedProp<'range'>>;
+	min?: number;
+	max?: number;
+}
+
+type CalendarProps = SingleCalendarProps | MultipleCalendarProps | RangeCalendarProps;
 
 type CalendarStatic = {
 	Header: typeof CalendarHeader;
@@ -45,14 +77,15 @@ type CalendarStatic = {
 	Grid: typeof CalendarGrid;
 }
 
-type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps> & RefAttributes<HTMLDivElement>> & CalendarStatic;
+type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps & RefAttributes<HTMLDivElement>>> & CalendarStatic;
 
-const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
+const CalendarInner = ({
 	children,
 	defaultMonth = new Date(),
-	defaultSelectedDate,
-	selectedDate: selectedDateFromProps,
-	onSelectDate,
+	mode = 'single',
+	defaultSelected,
+	selected: selectedFromProps,
+	onSelect,
 	from,
 	to,
 	disableOutsideLimit = false,
@@ -60,23 +93,67 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 	weekStartDay = 'sunday',
 	className,
 	...props
-}, ref) => {
+}: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
 
-	const isControlled = typeof selectedDateFromProps != 'undefined';
+	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : { min: undefined, max: undefined };
 
-	const [ internalSelectedDate, setInternalSelectedDate ] = useState<Date>(defaultSelectedDate || new Date());
+	const isControlled = typeof selectedFromProps != 'undefined';
+	const defaultSelectedFromProps: DateSelection<typeof mode> = mode === 'single' ? new Date() : mode === 'multiple' ? [ new Date() ] : [ new Date(), new Date() ];
+
+	const [ internalSelectedDate, setInternalSelectedDate ] = useState<DateSelection<typeof mode>>(defaultSelected || defaultSelectedFromProps);
 	const [ currentDate, setCurrentDate ] = useState<Date>(defaultMonth);
 
-	const selectedDate = isControlled ? selectedDateFromProps : internalSelectedDate;
+	const selected = isControlled ? selectedFromProps : internalSelectedDate;
 
 	const handleSelectDate = useCallback((date: Date) => {
-		if (onSelectDate) {
-			onSelectDate(date);
+		if (isControlled) {
+			if (onSelect) {
+				(onSelect as SelectDateHandler<typeof mode, typeof selectedFromProps>)(date);
+			}
+		} else {
+			setInternalSelectedDate(prevSelected => {
+				if (mode === 'single') {
+					return date;
+				}
+				if (Array.isArray(prevSelected)) {
+					if (mode === 'multiple') {
+						// const { min, max } = props as MultipleCalendarProps;
+						const index = prevSelected.findIndex((d) => d.getDate() === date.getDate() && d.getMonth() === date.getMonth() && d.getFullYear() === date.getFullYear());
+						if (index === -1) {
+							if (max && prevSelected.length >= max) return prevSelected;
+							return [ ...prevSelected, date ];
+						} else {
+							if (min && prevSelected.length <= min) return prevSelected;
+							return prevSelected.filter((_, i) => i !== index);
+						}
+					}
+					if (mode === 'range') {
+						if (prevSelected.length === 0) {
+							return [ date, date ];
+						} else if (prevSelected.length === 1) {
+							if (date.getTime() < prevSelected[0].getTime()) {
+								return [ date, prevSelected[0] ];
+							} else {
+								return [ prevSelected[0], date ];
+							}
+						} else {
+							return [ date, date ];
+						}
+					}
+				}
+				return prevSelected
+			});
 		}
+	}, [ isControlled, onSelect, mode, min, max ]);
+
+	useEffect(() => {
 		if (!isControlled) {
-			setInternalSelectedDate(date)
+			if (onSelect) {
+				(onSelect as SelectDateHandler<typeof mode, typeof selectedFromProps>)(selected);
+			}
 		}
-	}, [ isControlled, onSelectDate ]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ selected, isControlled ]);
 
 	const handleChangeCurrentDate = useCallback((date: Date) => {
 		setCurrentDate(date);
@@ -106,9 +183,10 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 		});
 	}, [ disableNavigation, from ]);
 
-	const contextValue: CalendarContextValue = useMemo(() => ({
-		onSelectDate: handleSelectDate,
-		selectedDate,
+	const contextValue: CalendarContextValue<typeof mode> = useMemo(() => ({
+		mode,
+		onSelect: handleSelectDate,
+		selected,
 		currentDate,
 		onChangeCurrentDate: handleChangeCurrentDate,
 		from,
@@ -119,8 +197,9 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 		onGoToPreviousMonth: handleGoToPreviousMonth,
 		weekStartDay,
 	}), [
+		mode,
 		handleSelectDate,
-		selectedDate,
+		selected,
 		currentDate,
 		handleChangeCurrentDate,
 		from,
@@ -143,7 +222,9 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(({
 			</div>
 		</CalendarContext.Provider>
 	);
-}) as CalendarComponent;
+};
+
+const Calendar = forwardRef<HTMLDivElement, CalendarProps>(CalendarInner) as CalendarComponent;
 
 Calendar.displayName = 'Calendar';
 
