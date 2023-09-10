@@ -1,13 +1,15 @@
+import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { isBefore } from '@/utils/date.util';
 import { WeekDay } from '@/utils/day.util';
 import { cn } from '@/utils/ui.util';
-import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import CalendarHeader from './Header/CalendarHeader';
-import CalendarTitle from './Header/CalendarTitle';
-import CalendarNavButton from './Header/CalendarNavButton';
+
 import CalendarContent from './Content/CalendarContent';
-import CalendarHead from './Content/CalendarHead';
 import CalendarGrid from './Content/CalendarGrid';
-import { isBefore } from '@/utils/date.util';
+import CalendarHead from './Content/CalendarHead';
+import CalendarHeader from './Header/CalendarHeader';
+import CalendarNavButton from './Header/CalendarNavButton';
+import CalendarTitle from './Header/CalendarTitle';
 
 type CalendarMode = 'single' | 'multiple' | 'range';
 type DateSelection<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ];
@@ -82,8 +84,7 @@ type CalendarStatic = {
 
 type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps & RefAttributes<HTMLDivElement>>> & CalendarStatic;
 
-const CalendarInner = ({
-	children,
+const CalendarInner = ({ children,
 	defaultMonth = new Date(),
 	mode = 'single',
 	defaultSelected,
@@ -95,10 +96,12 @@ const CalendarInner = ({
 	disableNavigation = false,
 	weekStartDay = 'sunday',
 	className,
-	...props
-}: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
+	...props }: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
 
-	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : { min: undefined, max: undefined };
+	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : {
+		min: undefined,
+		max: undefined, 
+	};
 	const dateRangeLastSelected = useRef<'start' | 'end'>('start');
 
 	const isControlled = typeof selectedFromProps != 'undefined';
@@ -148,7 +151,7 @@ const CalendarInner = ({
 						return [ date, date ];
 					}
 				}
-				return prevSelected
+				return prevSelected;
 			});
 		}
 	}, [ isControlled, onSelect, mode, min, max ]);
@@ -204,7 +207,7 @@ const CalendarInner = ({
 		onGoToPreviousMonth: handleGoToPreviousMonth,
 		weekStartDay,
 		min,
-		max
+		max,
 	}), [
 		mode,
 		handleSelectDate,
