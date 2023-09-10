@@ -6,18 +6,18 @@ dayjs.extend(isBetween);
 type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const getWeeksInMonth = (
-  year: number,
-  month: number,
-  weekStartDay: WeekStartDay = 0
+	year: number,
+	month: number,
+	weekStartDay: WeekStartDay = 0
 ): number => {
-  const firstDayOfMonth: Dayjs = dayjs().year(year).month(month).date(1);
-  const lastDayOfMonth: Dayjs = firstDayOfMonth.endOf('month');
-  const startOfWeek: number = firstDayOfMonth.day();
-  const daysInMonth: number = lastDayOfMonth.date();
-  const daysToAdd: number = (startOfWeek - weekStartDay + 7) % 7;
-  const totalDays: number = daysInMonth + daysToAdd;
-  const weeksInMonth: number = Math.ceil(totalDays / 7);
-  return weeksInMonth;
+	const firstDayOfMonth: Dayjs = dayjs().year(year).month(month).date(1);
+	const lastDayOfMonth: Dayjs = firstDayOfMonth.endOf('month');
+	const startOfWeek: number = firstDayOfMonth.day();
+	const daysInMonth: number = lastDayOfMonth.date();
+	const daysToAdd: number = (startOfWeek - weekStartDay + 7) % 7;
+	const totalDays: number = daysInMonth + daysToAdd;
+	const weeksInMonth: number = Math.ceil(totalDays / 7);
+	return weeksInMonth;
 };
 
 export const getDatesInMonthWeek = (
@@ -25,7 +25,7 @@ export const getDatesInMonthWeek = (
 	month: number,
 	year: number,
 	weekStartDay: WeekStartDay = 0
-  ): Dayjs[] => {
+): Dayjs[] => {
 	const firstDayOfMonth: Dayjs = dayjs().year(year).month(month).date(1);
 	const startDayOfWeek: number = (firstDayOfMonth.day() - weekStartDay + 7) % 7;
 	const startDate: Dayjs = firstDayOfMonth.add(weekNumber - 1, 'week').subtract(startDayOfWeek, 'day');

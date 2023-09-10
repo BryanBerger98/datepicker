@@ -1,7 +1,10 @@
-import { cn } from '@/utils/ui.util';
 import { TdHTMLAttributes } from 'react';
-import useCalendar from '../useCalendar';
+
 import { addDaysToDate, isInDateRange, isSame, substractDaysToDate } from '@/utils/date.util';
+import { cn } from '@/utils/ui.util';
+
+import useCalendar from '../useCalendar';
+
 
 type CalendarWeekDayProps = TdHTMLAttributes<HTMLTableCellElement> & {
 	date: Date;
@@ -31,7 +34,7 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 				return selectedDate.getMonth() === date.getMonth() && selectedDate.getDate() === date.getDate() && selectedDate.getFullYear() === date.getFullYear();
 			});
 		} else if (mode === 'single' && !Array.isArray(selected)) {
-			return dayDate.getMonth() === selected.getMonth() && dayDate.getDate() === selected.getDate() && dayDate.getFullYear() === selected.getFullYear()
+			return dayDate.getMonth() === selected.getMonth() && dayDate.getDate() === selected.getDate() && dayDate.getFullYear() === selected.getFullYear();
 		}
 		return false;
 	};
@@ -52,14 +55,14 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 			if (max && isSame(start, end)) {
 				if (start) {
 					const minAllowedDate = substractDaysToDate(start, max);
-					const maxAllowedDate = addDaysToDate(start, max)
+					const maxAllowedDate = addDaysToDate(start, max);
 					return !isInDateRange(date, minAllowedDate, maxAllowedDate);
 				}
 			}
 			if (min && min > 2 && isSame(start, end)) {
 				if (start) {
 					const minAllowedDate = substractDaysToDate(start, min - 2);
-					const maxAllowedDate = addDaysToDate(start, min - 2)
+					const maxAllowedDate = addDaysToDate(start, min - 2);
 					return isInDateRange(date, minAllowedDate, maxAllowedDate);
 				}
 			}
@@ -69,18 +72,18 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 
 	return (
 		<td
-			onClick={ handleClickDate(dayDate) }
-			aria-selected={ isSelected(dayDate) }
 			aria-disabled={ isDisabled(dayDate) }
+			aria-selected={ isSelected(dayDate) }
 			className={
 				cn('text-center relative focus-within:relative focus-within:z-20 inline-flex items-center justify-center text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 aria-disabled:pointer-events-none aria-disabled:opacity-50 h-9 w-9 p-0 font-normal aria-selected:opacity-100', {
 					'bg-slate-900': isSelected(dayDate),
 					'text-slate-300': dayDate.getMonth() !== currentDate.getMonth(),
 					'text-white': isSelected(dayDate),
-					'rounded-l-md': mode === 'range' && Array.isArray(selected) ? isSame(dayDate, selected[0]) : isSelected(dayDate),
-					'rounded-r-md': mode === 'range' && Array.isArray(selected) ? isSame(dayDate, selected[1]) : isSelected(dayDate),
+					'rounded-l-md': mode === 'range' && Array.isArray(selected) ? isSame(dayDate, selected[ 0 ]) : isSelected(dayDate),
+					'rounded-r-md': mode === 'range' && Array.isArray(selected) ? isSame(dayDate, selected[ 1 ]) : isSelected(dayDate),
 				}, className)
 			}
+			onClick={ handleClickDate(dayDate) }
 			{ ...props }
 			role="button"
 		>

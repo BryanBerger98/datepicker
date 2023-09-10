@@ -1,5 +1,7 @@
-import { cn } from '@/utils/ui.util';
 import { HTMLAttributes, ReactNode } from 'react';
+
+import { cn } from '@/utils/ui.util';
+
 import useCalendar from '../useCalendar';
 
 type CalendarTitleProps = HTMLAttributes<HTMLDivElement> & {
@@ -15,8 +17,16 @@ const CalendarTitle = ({ children, className, monthIndex = 0, ...props }: Calend
 	date.setMonth(date.getMonth() + monthIndex);
 
 	return (
-		<div className={ cn('text-sm font-medium', className)} role="presentation" aria-live='polite' { ...props }>
-			{ children ? children : date.toLocaleString('default', { month: 'long', year: 'numeric' }) }
+		<div
+			aria-live="polite"
+			className={ cn('text-sm font-medium', className) }
+			role="presentation"
+			{ ...props }
+		>
+			{ children ? children : date.toLocaleString('default', {
+				month: 'long',
+				year: 'numeric', 
+			}) }
 		</div>
 	);
 };

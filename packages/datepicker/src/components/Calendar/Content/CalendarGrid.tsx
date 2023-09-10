@@ -1,6 +1,9 @@
-import { buildCalendarGrid } from '@/utils/calendar.utils';
-import useCalendar from '../useCalendar';
 import { HTMLAttributes } from 'react';
+
+import { buildCalendarGrid } from '@/utils/calendar.utils';
+
+import useCalendar from '../useCalendar';
+
 import CalendarWeek from './CalendarWeek';
 
 type CalendarGridProps = HTMLAttributes<HTMLTableSectionElement> & {
@@ -20,15 +23,15 @@ const CalendarGrid = ({ monthIndex = 0, weekClassName, dayClassName, ...props }:
 		<tbody { ...props }>
 			{
 				buildCalendarGrid(date.getMonth(), date.getFullYear(), { weekStartDay })
-				.map((week, index) => (
-					<CalendarWeek
-						week={ week }
-						key={ index }
-						className={ weekClassName }
-						dayClassName={ dayClassName }
-						currentDate={ date }
-					/>
-				))
+					.map((week, index) => (
+						<CalendarWeek
+							key={ index }
+							className={ weekClassName }
+							currentDate={ date }
+							dayClassName={ dayClassName }
+							week={ week }
+						/>
+					))
 			}
 		</tbody>
 	);
