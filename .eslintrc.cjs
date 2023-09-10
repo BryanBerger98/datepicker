@@ -11,11 +11,14 @@ module.exports = {
 		'plugin:react-hooks/recommended',
 	],
 	parserOptions: {
+		// tsconfigRootDir: __dirname,
 		ecmaVersion: 'latest',
+		sourceType: 'module',
+		// project: './tsconfig.json',
 	},
-	ignorePatterns: ['dist', '.eslintrc.cjs'],
+	ignorePatterns: ['dist', '.eslintrc.cjs', '!.lintstagedrc.js'],
 	parser: '@typescript-eslint/parser',
-	plugins: [ 'react-refresh', '@typescript-eslint', 'jsx-a11y', 'react', 'import', 'react-hooks' ],
+	plugins: [ 'react', 'react-refresh', '@typescript-eslint', 'jsx-a11y', 'import', 'react-hooks' ],
 	rules: {
 		// Syntax
 		indent: [ 'warn', 'tab', { 'SwitchCase': 1 } ],
@@ -74,7 +77,7 @@ module.exports = {
 		'no-constant-binary-expression': 'error',
 		'no-new-native-nonconstructor': 'error',
 		// Objects
-		'object-curly-spacing': [ 'warn', 'always' ],
+		'object-curly-spacing': 'off',
 		'object-property-newline': 'warn',
 		'object-curly-newline': [
 			'warn',
@@ -209,7 +212,7 @@ module.exports = {
 		],
 		'react/jsx-no-bind': [ 'warn', { 'allowArrowFunctions': true } ],
 		'react/jsx-wrap-multilines': 'warn',
-		'react/no-array-index-key': 'error',
+		'react/no-array-index-key': 'off',
 		'react/no-danger': 'error',
 		'react/no-deprecated': 'error',
 		'react/no-multi-comp': 'off',
@@ -277,8 +280,11 @@ module.exports = {
 		],
 	},
 	'settings': {
+		'react': {
+			'version': 'detect',
+		},
 		'import/extensions': [ '.tsx', '.ts' ],
 		'import/parsers': { '@typescript-eslint/parser': [ '.ts', '.tsx' ] },
-		'import/resolver': { 'typescript': { 'project': '.' } },
+		'import/resolver': { 'typescript': { 'project': [ 'packages/datepicker/tsconfig.json', 'apps/www/tsconfig.json' ] } },
 	},
 };

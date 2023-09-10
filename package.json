@@ -8,7 +8,13 @@
 			"apps/*"
 		]
 	},
+	"scripts": {
+		"prepare": "husky install"
+	},
 	"devDependencies": {
+		"@types/node": "^20.6.0",
+		"@types/react": "^18.2.21",
+		"@types/react-dom": "^18.2.7",
 		"@typescript-eslint/eslint-plugin": "^6.6.0",
 		"@typescript-eslint/parser": "^6.6.0",
 		"eslint": "^8.49.0",
@@ -17,6 +23,11 @@
 		"eslint-plugin-jsx-a11y": "^6.7.1",
 		"eslint-plugin-react": "^7.33.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-react-refresh": "^0.4.3"
+		"eslint-plugin-react-refresh": "^0.4.3",
+		"husky": "^8.0.3",
+		"lint-staged": "^14.0.1"
+	},
+	"dependencies": {
+		"typescript": "^5.2.2"
 	}
 }
