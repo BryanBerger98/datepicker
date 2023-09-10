@@ -1,8 +1,9 @@
+'use client';
+
+import { Calendar } from 'datepicker';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import Calendar from '../Calendar';
-
-const SimpleCalendarDemo = () => {
+const SimpleDatePicker = () => {
 
 	return (
 		<Calendar
@@ -34,4 +35,4 @@ const SimpleCalendarDemo = () => {
 	);
 };
 
-export default SimpleCalendarDemo;
+export default SimpleDatePicker;

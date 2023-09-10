@@ -1,4 +1,3 @@
-import './App.css';
 import MultiMonthsCalendarDemo from './components/Demo/MultiMonthsCalendarDemo';
 import MultiSelectCalendarDemo from './components/Demo/MultiSelectCalendarDemo';
 import RangeCalendarDemo from './components/Demo/RangeCalendarDemo';
