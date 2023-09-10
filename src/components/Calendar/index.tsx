@@ -11,8 +11,6 @@ import CalendarHeader from './Header/CalendarHeader';
 import CalendarNavButton from './Header/CalendarNavButton';
 import CalendarTitle from './Header/CalendarTitle';
 
-const a = 'b';
-
 type CalendarMode = 'single' | 'multiple' | 'range';
 type DateSelection<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ];
 type DateSelectedProp<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ] | undefined;
