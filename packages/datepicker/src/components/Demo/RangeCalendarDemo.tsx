@@ -11,7 +11,6 @@ const RangeCalendarDemo = () => {
 			min={ 3 }
 			mode="range"
 			weekStartDay="monday"
-			required
 		>
 			<Calendar.Header className="relative">
 				<Calendar.Title />

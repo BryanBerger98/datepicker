@@ -15,7 +15,7 @@ type CalendarWeekDayProps = TdHTMLAttributes<HTMLTableCellElement> & {
 
 const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: CalendarWeekDayProps) => {
 
-	const { onSelect, disableOutsideLimit, to, from, selected, mode, max, min, disabled, showOutsideDates } = useCalendar();
+	const { onSelect, disableOutsideLimit, to, from, selected, mode, max, min, disabled, showOutsideDates, required } = useCalendar();
 
 	const handleClickDate = (date: Date) => () => onSelect(date);
 
@@ -54,6 +54,9 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 		if (mode === 'range' && Array.isArray(selected) && selected.length === 2) {
 			const [ start, end ] = selected;
 			if (max && min && min > 2 && isSame(start, end)) {
+				if (start && !required && isSame(date, start)) {
+					return false;
+				}
 				const minMinAllowedDate = substractDaysToDate(start, min - 2);
 				const minMaxAllowedDate = addDaysToDate(start, min - 2);
 				const maxMinAllowedDate = substractDaysToDate(start, max);
@@ -68,6 +71,9 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 				}
 			}
 			if (min && min > 2 && isSame(start, end)) {
+				if (start && !required && isSame(date, start)) {
+					return false;
+				}
 				if (start) {
 					const minAllowedDate = substractDaysToDate(start, min - 2);
 					const maxAllowedDate = addDaysToDate(start, min - 2);
