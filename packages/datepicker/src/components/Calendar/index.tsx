@@ -1,7 +1,7 @@
 import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Matcher } from '@/types/Matchers';
-import { isBefore } from '@/utils/date.util';
+import { isBefore, isSame } from '@/utils/date.util';
 import { WeekDay } from '@/utils/day.util';
 import { cn } from '@/utils/ui.util';
 
@@ -13,7 +13,7 @@ import CalendarNavButton from './Header/CalendarNavButton';
 import CalendarTitle from './Header/CalendarTitle';
 
 type CalendarMode = 'single' | 'multiple' | 'range';
-type DateSelection<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ];
+type DateSelection<T extends CalendarMode> = T extends 'single' ? (Date | null) : T extends 'multiple' ? Date[] : [ Date, Date ];
 type DateSelectedProp<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ] | undefined;
 type SelectDateHandler<T extends CalendarMode, S extends DateSelectedProp<T>> = (value: S extends undefined ? DateSelection<T> : Date) => void;
 
@@ -34,6 +34,7 @@ type CalendarContextValue<T extends CalendarMode> = {
 	min?: number;
 	max?: number;
 	disabled?: Matcher | Matcher[] | undefined;
+	required?: boolean;
 };
 
 export const CalendarContext = createContext<CalendarContextValue<CalendarMode> | null>(null);
@@ -49,6 +50,7 @@ interface BaseCalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSele
 	min: never;
 	max: never;
 	disabled?: Matcher | Matcher[] | undefined;
+	required?: boolean;
 }
 
 interface SingleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
@@ -103,6 +105,7 @@ const CalendarInner = ({ children,
 	weekStartDay = 'sunday',
 	className,
 	disabled = false,
+	required = false,
 	...props }: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
 
 	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : {
@@ -112,7 +115,7 @@ const CalendarInner = ({ children,
 	const dateRangeLastSelected = useRef<'start' | 'end'>('start');
 
 	const isControlled = typeof selectedFromProps != 'undefined';
-	const defaultSelectedFromProps: DateSelection<typeof mode> = mode === 'single' ? new Date() : mode === 'multiple' ? [ new Date() ] : [];
+	const defaultSelectedFromProps: DateSelection<typeof mode> = mode === 'single' ? null : mode === 'multiple' ? [] : [];
 
 	const [ internalSelectedDate, setInternalSelectedDate ] = useState<DateSelection<typeof mode>>(defaultSelected || defaultSelectedFromProps);
 	const [ currentDate, setCurrentDate ] = useState<Date>(defaultMonth);
@@ -127,11 +130,13 @@ const CalendarInner = ({ children,
 		} else {
 			setInternalSelectedDate(prevSelected => {
 				if (mode === 'single') {
+					if (!required && prevSelected && prevSelected instanceof Date && isSame(prevSelected, date)) {
+						return null;
+					}
 					return date;
 				}
 				if (Array.isArray(prevSelected)) {
 					if (mode === 'multiple') {
-						// const { min, max } = props as MultipleCalendarProps;
 						const index = prevSelected.findIndex((d) => d.getDate() === date.getDate() && d.getMonth() === date.getMonth() && d.getFullYear() === date.getFullYear());
 						if (index === -1) {
 							if (max && prevSelected.length >= max) return prevSelected;
@@ -149,6 +154,12 @@ const CalendarInner = ({ children,
 						}
 						if (dateRangeLastSelected.current === 'end') {
 							dateRangeLastSelected.current = 'start';
+							if (isSame(prevStartDate, date)) {
+								if (required) {
+									return [ date, date ];
+								}
+								return [];
+							}
 							if (isBefore(prevStartDate, date)) {
 								return [ prevStartDate, date ];
 							} else {
@@ -161,7 +172,7 @@ const CalendarInner = ({ children,
 				return prevSelected;
 			});
 		}
-	}, [ isControlled, onSelect, mode, min, max ]);
+	}, [ isControlled, onSelect, mode, min, max, required ]);
 
 	useEffect(() => {
 		if (!isControlled) {
