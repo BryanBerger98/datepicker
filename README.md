@@ -1,5 +1,7 @@
 # BryanBerger98/datepicker
 
-React date picker designed with shadcn/ui.
+React composable date picker inspired by react-day-picker.
 
 👷 Development in progress...
+
+![Datepickers preview](preview.png)

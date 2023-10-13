@@ -7,13 +7,8 @@ const DisabledCalendarDemo = () => {
 	return (
 		<Calendar
 			className="rounded-md border p-3"
-			disabled={ [
-				'monday',
-				'thursday',
-				new Date(2023, 9, 1),
-				new Date('2023-09-06'),
-			] }
 			weekStartDay="monday"
+			disabled
 		>
 			<Calendar.Header className="relative">
 				<Calendar.Title />
