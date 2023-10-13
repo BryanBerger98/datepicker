@@ -1,5 +1,6 @@
 import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRef, RefAttributes, createContext, forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { Matcher } from '@/types/Matchers';
 import { isBefore } from '@/utils/date.util';
 import { WeekDay } from '@/utils/day.util';
 import { cn } from '@/utils/ui.util';
@@ -31,6 +32,7 @@ type CalendarContextValue<T extends CalendarMode> = {
 	weekStartDay: WeekDay;
 	min?: number;
 	max?: number;
+	disabled?: Matcher | Matcher[] | undefined;
 };
 
 export const CalendarContext = createContext<CalendarContextValue<CalendarMode> | null>(null);
@@ -44,6 +46,7 @@ interface BaseCalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSele
 	weekStartDay?: WeekDay;
 	min: never;
 	max: never;
+	disabled?: Matcher | Matcher[] | undefined;
 }
 
 interface SingleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
@@ -96,6 +99,7 @@ const CalendarInner = ({ children,
 	disableNavigation = false,
 	weekStartDay = 'sunday',
 	className,
+	disabled = false,
 	...props }: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
 
 	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : {
@@ -208,6 +212,7 @@ const CalendarInner = ({ children,
 		weekStartDay,
 		min,
 		max,
+		disabled,
 	}), [
 		mode,
 		handleSelectDate,
@@ -223,6 +228,7 @@ const CalendarInner = ({ children,
 		weekStartDay,
 		min,
 		max,
+		disabled,
 	]);
 
 	return (

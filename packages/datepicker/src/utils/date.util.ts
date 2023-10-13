@@ -5,6 +5,10 @@ dayjs.extend(isBetween);
 
 type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+export const isDate = (value: unknown): value is Date => {
+	return value instanceof Date;
+};
+
 export const getWeeksInMonth = (
 	year: number,
 	month: number,
@@ -60,6 +64,12 @@ export const isBefore = (dateToCheck: Date, date: Date): boolean => {
 	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
 	const dateWithoutTime = dayjs(date).startOf('day');
 	return dateToCheckWithoutTime.isBefore(dateWithoutTime, 'day');
+};
+
+export const isAfter = (dateToCheck: Date, date: Date): boolean => {
+	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
+	const dateWithoutTime = dayjs(date).startOf('day');
+	return dateToCheckWithoutTime.isAfter(dateWithoutTime, 'day');
 };
 
 export const isSame = (dateToCheck: Date, date: Date): boolean => {

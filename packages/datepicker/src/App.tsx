@@ -1,3 +1,4 @@
+import DisabledCalendarDemo from './components/Demo/DisabledCalendarDemo';
 import MultiMonthsCalendarDemo from './components/Demo/MultiMonthsCalendarDemo';
 import MultiSelectCalendarDemo from './components/Demo/MultiSelectCalendarDemo';
 import RangeCalendarDemo from './components/Demo/RangeCalendarDemo';
@@ -31,6 +32,12 @@ const App = () => {
 					<h2 className="text-xl font-semibold">Range selection calendar</h2>
 					<div className="flex">
 						<RangeCalendarDemo />
+					</div>
+				</div>
+				<div className="flex flex-col gap-4">
+					<h2 className="text-xl font-semibold">Disabled calendar</h2>
+					<div className="flex">
+						<DisabledCalendarDemo />
 					</div>
 				</div>
 			</div>
