@@ -35,16 +35,19 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 			return selected.some((selectedDate) => {
 				return selectedDate.getMonth() === date.getMonth() && selectedDate.getDate() === date.getDate() && selectedDate.getFullYear() === date.getFullYear();
 			});
-		} else if (mode === 'single' && !Array.isArray(selected)) {
+		} else if (mode === 'single' && selected && !Array.isArray(selected)) {
 			return dayDate.getMonth() === selected.getMonth() && dayDate.getDate() === selected.getDate() && dayDate.getFullYear() === selected.getFullYear();
 		}
 		return false;
 	};
 
-	const isDisabled = (date: Date) => {
-		if (disabled !== undefined) {
+	const isDisabledByModifier = (date: Date) => {
+		if (disabled !== undefined && disabled !== false) {
 			return isMatch(date, matcherToArray(disabled));
 		}
+	};
+
+	const isDisabled = (date: Date) => {
 		if (disableOutsideLimit) {
 			if (to && to.getTime() < date.getTime() || from && from.getTime() > date.getTime()) return true;
 		}
@@ -77,7 +80,7 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 
 	return (
 		<td
-			aria-disabled={ isDisabled(dayDate) || (!showOutsideDates && dayDate.getMonth() !== currentDate.getMonth()) }
+			aria-disabled={ isDisabled(dayDate) || isDisabledByModifier(dayDate) || (!showOutsideDates && dayDate.getMonth() !== currentDate.getMonth()) }
 			aria-selected={ isSelected(dayDate) }
 			className={
 				cn('text-center relative focus-within:relative focus-within:z-20 inline-flex items-center justify-center text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 aria-disabled:pointer-events-none aria-disabled:opacity-50 h-9 w-9 p-0 font-normal aria-selected:opacity-100', {
