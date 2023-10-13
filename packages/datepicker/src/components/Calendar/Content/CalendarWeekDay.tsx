@@ -15,7 +15,7 @@ type CalendarWeekDayProps = TdHTMLAttributes<HTMLTableCellElement> & {
 
 const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: CalendarWeekDayProps) => {
 
-	const { onSelect, disableOutsideLimit, to, from, selected, mode, max, min, disabled } = useCalendar();
+	const { onSelect, disableOutsideLimit, to, from, selected, mode, max, min, disabled, showOutsideDates } = useCalendar();
 
 	const handleClickDate = (date: Date) => () => onSelect(date);
 
@@ -77,7 +77,7 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 
 	return (
 		<td
-			aria-disabled={ isDisabled(dayDate) }
+			aria-disabled={ isDisabled(dayDate) || (!showOutsideDates && dayDate.getMonth() !== currentDate.getMonth()) }
 			aria-selected={ isSelected(dayDate) }
 			className={
 				cn('text-center relative focus-within:relative focus-within:z-20 inline-flex items-center justify-center text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 aria-disabled:pointer-events-none aria-disabled:opacity-50 h-9 w-9 p-0 font-normal aria-selected:opacity-100', {
@@ -86,6 +86,7 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 					'text-white': isSelected(dayDate),
 					'rounded-l-md': mode === 'range' && Array.isArray(selected) ? isSame(dayDate, selected[ 0 ]) : isSelected(dayDate),
 					'rounded-r-md': mode === 'range' && Array.isArray(selected) ? isSame(dayDate, selected[ 1 ]) : isSelected(dayDate),
+					'!opacity-0': !showOutsideDates && dayDate.getMonth() !== currentDate.getMonth(),
 				}, className)
 			}
 			onClick={ handleClickDate(dayDate) }

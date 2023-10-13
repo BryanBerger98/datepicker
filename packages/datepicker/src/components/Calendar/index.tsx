@@ -23,6 +23,7 @@ type CalendarContextValue<T extends CalendarMode> = {
 	selected: DateSelection<T>;
 	currentDate: Date;
 	onChangeCurrentDate: (date: Date) => void;
+	showOutsideDates?: boolean;
 	from?: Date;
 	to?: Date;
 	disableOutsideLimit?: boolean;
@@ -38,6 +39,7 @@ type CalendarContextValue<T extends CalendarMode> = {
 export const CalendarContext = createContext<CalendarContextValue<CalendarMode> | null>(null);
 
 interface BaseCalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
+	showOutsideDates?: boolean;
 	from?: Date;
 	to?: Date;
 	defaultMonth?: Date;
@@ -88,6 +90,7 @@ type CalendarStatic = {
 type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps & RefAttributes<HTMLDivElement>>> & CalendarStatic;
 
 const CalendarInner = ({ children,
+	showOutsideDates = false,
 	defaultMonth = new Date(),
 	mode = 'single',
 	defaultSelected,
@@ -198,6 +201,7 @@ const CalendarInner = ({ children,
 	}, [ disableNavigation, from ]);
 
 	const contextValue: CalendarContextValue<typeof mode> = useMemo(() => ({
+		showOutsideDates,
 		mode,
 		onSelect: handleSelectDate,
 		selected,
@@ -214,6 +218,7 @@ const CalendarInner = ({ children,
 		max,
 		disabled,
 	}), [
+		showOutsideDates,
 		mode,
 		handleSelectDate,
 		selected,

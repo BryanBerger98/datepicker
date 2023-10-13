@@ -8,6 +8,7 @@ const SimpleCalendarDemo = () => {
 		<Calendar
 			className="rounded-md border p-3"
 			weekStartDay="monday"
+			showOutsideDates
 		>
 			<Calendar.Header className="relative">
 				<Calendar.Title />
