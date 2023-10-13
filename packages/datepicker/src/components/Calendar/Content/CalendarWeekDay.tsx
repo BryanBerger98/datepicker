@@ -1,6 +1,8 @@
 import { TdHTMLAttributes } from 'react';
 
 import { addDaysToDate, isInDateRange, isSame, substractDaysToDate } from '@/utils/date.util';
+import { isMatch } from '@/utils/modifiers/is-match.util';
+import { matcherToArray } from '@/utils/modifiers/matcher-to-array.util';
 import { cn } from '@/utils/ui.util';
 
 import useCalendar from '../useCalendar';
@@ -13,7 +15,7 @@ type CalendarWeekDayProps = TdHTMLAttributes<HTMLTableCellElement> & {
 
 const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: CalendarWeekDayProps) => {
 
-	const { onSelect, disableOutsideLimit, to, from, selected, mode, max, min } = useCalendar();
+	const { onSelect, disableOutsideLimit, to, from, selected, mode, max, min, disabled } = useCalendar();
 
 	const handleClickDate = (date: Date) => () => onSelect(date);
 
@@ -40,6 +42,9 @@ const CalendarWeekDay = ({ date: dayDate, className, currentDate, ...props }: Ca
 	};
 
 	const isDisabled = (date: Date) => {
+		if (disabled !== undefined) {
+			return isMatch(date, matcherToArray(disabled));
+		}
 		if (disableOutsideLimit) {
 			if (to && to.getTime() < date.getTime() || from && from.getTime() > date.getTime()) return true;
 		}
