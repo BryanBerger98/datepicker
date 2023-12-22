@@ -16,7 +16,7 @@
 		"build:dp": "npm run build --workspace @bryanberger/datepicker"
 	},
 	"validate-branch-name": {
-		"pattern": "^(main|development|develop|staging){1}$|^(feat|fix|hotfix|release|chore)/.+$",
+		"pattern": "^(main|development|develop|staging){1}$|^(feat|fix|hotfix|release|chore|changeset-release)/.+$",
 		"errorMsg": "Please, set a valid branch name."
 	},
 	"git-precommit-checks": {
