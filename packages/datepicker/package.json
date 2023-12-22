@@ -1,11 +1,31 @@
 {
 	"name": "@bryanberger/datepicker",
+	"description": "React composable date picker inspired by react-day-picker.",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"author": {
+		"name": "Bryan Berger",
+		"url": "https://bryanberger.dev"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bryanberger98/datepicker.git",
+		"directory": "packages/datepicker"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"license": "MIT",
 	"files": [
 		"dist",
 		"src"
+	],
+	"keywords": [
+		"datepicker",
+		"calendar",
+		"components",
+		"react"
 	],
 	"main": "./dist/index.umd.js",
 	"typings": "./dist/index.d.ts",

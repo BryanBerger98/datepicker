@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar } from 'datepicker';
+import { Calendar } from '@bryanberger/datepicker';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const SimpleDatePicker = () => {

@@ -26,5 +26,6 @@ export const getCellDataAttributes = (options: CellDataAttributesOptions) => {
 			'data-is-today': options.isToday,
 			'data-is-middle': options.isMiddle,
 		};
+		return attributes;
 	}
 };
