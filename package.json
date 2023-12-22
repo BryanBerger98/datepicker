@@ -8,6 +8,7 @@
 			"apps/*"
 		]
 	},
+	"type": "module",
 	"scripts": {
 		"commit": "git-cz",
 		"commit:all": "git add . && git-cz",
