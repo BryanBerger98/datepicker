@@ -1,13 +1,17 @@
 import { HTMLAttributes, PropsWithChildren } from 'react';
 
-import { cn } from '@/utils/ui.util';
-
 type CalendarProps = HTMLAttributes<HTMLDivElement>;
 
-const CalendarHeader = ({ children, className, ...props }: PropsWithChildren<CalendarProps>) => {	
+const CalendarHeader = ({ children, ...props }: PropsWithChildren<CalendarProps>) => {	
 	return (
 		<div
-			className={ cn('flex justify-center pt-1 items-center', className) }
+			style={ {
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				paddingTop: '1rem',
+				paddingBottom: '1rem',
+			} }
 			{ ...props }
 		>
 			{ children }

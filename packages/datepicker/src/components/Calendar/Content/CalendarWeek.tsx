@@ -1,26 +1,30 @@
 import { HTMLAttributes } from 'react';
 
-import { cn } from '@/utils/ui.util';
-
 import CalendarWeekDay from './CalendarWeekDay';
 
 type CalendarWeekProps = HTMLAttributes<HTMLTableRowElement> & {
 	week: Date[];
-	dayClassName?: string;
+	classNames?: {
+		day?: string;
+	};
 	currentDate: Date;
 };
 
-const CalendarWeek = ({ week, className, dayClassName, currentDate, ...props }: CalendarWeekProps) => {
+const CalendarWeek = ({ week, currentDate, classNames, ...props }: CalendarWeekProps) => {
 
 	return (
 		<tr
-			className={ cn('flex w-full mt-2', className) }
+			style={ {
+				display: 'flex',
+				width: '100%',
+				marginTop: '0.5rem',
+			} }
 			{ ...props }
 		>
 			{ week.map((date, index) => (
 				<CalendarWeekDay
 					key={ index }
-					className={ dayClassName }
+					className={ classNames?.day }
 					currentDate={ currentDate }
 					date={ date }
 				/>

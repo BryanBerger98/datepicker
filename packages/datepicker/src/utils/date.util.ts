@@ -43,15 +43,33 @@ export const getDatesInMonthWeek = (
 	return weekDates;
 };
 
+const getInclusionBehavior = (behavior?: 'include' | 'include-start' | 'include-end' | 'exclude') => {
+	switch (behavior) {
+		case 'include':
+			return '[]';
+		case 'include-start':
+			return '[)';
+		case 'include-end':
+			return '(]';
+		case 'exclude':
+			return '()';
+		default:
+			return '[]';
+	}
+};
+
 export const isInDateRange = (
 	dateToCheck: Date,
-	startDate?: Date,
-	endDate?: Date
+	options?: {
+		from?: Date,
+		to?: Date,
+		behavior?: 'include' | 'exclude' | 'include-start' | 'include-end',
+	}
 ): boolean => {
-	const startDateWithoutTime = dayjs(startDate).startOf('day');
-	const endDateWithoutTime = dayjs(endDate).startOf('day');
+	const startDateWithoutTime = dayjs(options?.from).startOf('day');
+	const endDateWithoutTime = dayjs(options?.to).startOf('day');
 	const dateToCheckWithoutTime = dayjs(dateToCheck).startOf('day');
-	return dateToCheckWithoutTime.isBetween(startDateWithoutTime, endDateWithoutTime, 'day', '[]');
+	return dateToCheckWithoutTime.isBetween(startDateWithoutTime, endDateWithoutTime, 'day', getInclusionBehavior(options?.behavior));
 };
 
 export const getDateRangeLength = (startDate: Date, endDate: Date): number => {

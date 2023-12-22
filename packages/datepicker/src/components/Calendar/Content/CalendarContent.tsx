@@ -1,15 +1,16 @@
 import { TableHTMLAttributes } from 'react';
 
-import { cn } from '@/utils/ui.util';
-
 type CalendarContentProps = TableHTMLAttributes<HTMLTableElement>;
 
-const CalendarContent = ({ children, className, role = 'grid', ...props }: CalendarContentProps) => {
+const CalendarContent = ({ children, role = 'grid', ...props }: CalendarContentProps) => {
 
 	return (
 		<table
-			className={ cn('w-full border-collapse space-y-1', className) }
 			role={ role }
+			style={ {
+				borderCollapse: 'collapse',
+				width: '100%',
+			} }
 			{ ...props }
 		>
 			{ children }

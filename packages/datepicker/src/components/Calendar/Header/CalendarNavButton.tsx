@@ -1,7 +1,5 @@
 import { ButtonHTMLAttributes } from 'react';
 
-import { cn } from '@/utils/ui.util';
-
 import useCalendar from '../useCalendar';
 
 type CalendarNavButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -9,7 +7,7 @@ type CalendarNavButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	skip?: number;
 };
 
-const CalendarNavButton = ({ children, direction, className, skip = 0, ...props }: CalendarNavButtonProps) => {
+const CalendarNavButton = ({ children, direction, skip = 0, ...props }: CalendarNavButtonProps) => {
 
 	const { currentDate, to, from, onGoToNextMonth, onGoToPreviousMonth, disableNavigation } = useCalendar();
 
@@ -22,7 +20,6 @@ const CalendarNavButton = ({ children, direction, className, skip = 0, ...props 
 	return (
 		<button
 			aria-label={ direction === 'previous' ? 'Go to previous month' : 'Go to next month' }
-			className={ cn('text-xs disabled:pointer-events-none', className) }
 			disabled={ disabledStatus }
 			name="previous-month"
 			type="button"

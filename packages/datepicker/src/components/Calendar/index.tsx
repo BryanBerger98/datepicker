@@ -3,7 +3,6 @@ import { ForwardRefExoticComponent, ForwardedRef, HTMLAttributes, PropsWithoutRe
 import { Matcher } from '@/types/Matchers';
 import { isBefore, isSame } from '@/utils/date.util';
 import { WeekDay } from '@/utils/day.util';
-import { cn } from '@/utils/ui.util';
 
 import CalendarContent from './Content/CalendarContent';
 import CalendarGrid from './Content/CalendarGrid';
@@ -12,7 +11,7 @@ import CalendarHeader from './Header/CalendarHeader';
 import CalendarNavButton from './Header/CalendarNavButton';
 import CalendarTitle from './Header/CalendarTitle';
 
-type CalendarMode = 'single' | 'multiple' | 'range';
+export type CalendarMode = 'single' | 'multiple' | 'range';
 type DateSelection<T extends CalendarMode> = T extends 'single' ? (Date | null) : T extends 'multiple' ? Date[] : [ Date, Date ];
 type DateSelectedProp<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ] | undefined;
 type SelectDateHandler<T extends CalendarMode, S extends DateSelectedProp<T>> = (value: S extends undefined ? DateSelection<T> : Date) => void;
@@ -103,7 +102,6 @@ const CalendarInner = ({ children,
 	disableOutsideLimit = false,
 	disableNavigation = false,
 	weekStartDay = 'sunday',
-	className,
 	disabled = false,
 	required = false,
 	...props }: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
@@ -250,7 +248,12 @@ const CalendarInner = ({ children,
 	return (
 		<CalendarContext.Provider value={ contextValue }>
 			<div
-				className={ cn('flex flex-col space-y-4', className) }
+				style={ {
+					display: 'flex',
+					flexDirection: 'column',
+					marginTop: '1rem',
+					marginBottom: '1rem',
+				} }
 				{ ...props }
 				ref={ ref }
 			>

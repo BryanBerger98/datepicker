@@ -1,7 +1,5 @@
 import { HTMLAttributes, ReactNode } from 'react';
 
-import { cn } from '@/utils/ui.util';
-
 import useCalendar from '../useCalendar';
 
 type CalendarTitleProps = HTMLAttributes<HTMLDivElement> & {
@@ -9,7 +7,7 @@ type CalendarTitleProps = HTMLAttributes<HTMLDivElement> & {
 	monthIndex?: number;
 };
 
-const CalendarTitle = ({ children, className, monthIndex = 0, ...props }: CalendarTitleProps) => {
+const CalendarTitle = ({ children, monthIndex = 0, ...props }: CalendarTitleProps) => {
 
 	const { currentDate } = useCalendar();
 
@@ -19,7 +17,6 @@ const CalendarTitle = ({ children, className, monthIndex = 0, ...props }: Calend
 	return (
 		<div
 			aria-live="polite"
-			className={ cn('text-sm font-medium', className) }
 			role="presentation"
 			{ ...props }
 		>

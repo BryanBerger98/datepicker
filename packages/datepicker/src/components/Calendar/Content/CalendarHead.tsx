@@ -1,7 +1,6 @@
 import { HTMLAttributes } from 'react';
 
 import { WeekDay } from '@/utils/day.util';
-import { cn } from '@/utils/ui.util';
 
 import useCalendar from '../useCalendar';
 
@@ -57,15 +56,24 @@ const CalendarHead = ({ className, rowClassName, cellClassName, ...props }: Cale
 			className={ className }
 			{ ...props }
 		>
-			<tr className={ cn('flex', rowClassName) }>
+			<tr
+				className={ rowClassName }
+				style={ { display: 'flex' } }
+			>
 				{
 					arrangedDaysOfWeek.map((day) => {
 						return (
 							<th
 								key={ day.name }
 								aria-label={ day.name }
-								className={ cn('w-9 font-normal text-[0.8rem]', cellClassName) }
+								className={ cellClassName }
 								scope="col"
+								style={ {
+									width: '2.25rem',
+									fontWeight: 400,
+									textAlign: 'center',
+									fontSize: '0.8rem',
+								} }
 							>
 								{ day.shortName }
 							</th>

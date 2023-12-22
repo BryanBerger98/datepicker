@@ -8,11 +8,13 @@ import CalendarWeek from './CalendarWeek';
 
 type CalendarGridProps = HTMLAttributes<HTMLTableSectionElement> & {
 	monthIndex?: number
-	weekClassName?: string;
-	dayClassName?: string;
+	classNames?: {
+		day?: string;
+		week?: string;
+	};
 }
 
-const CalendarGrid = ({ monthIndex = 0, weekClassName, dayClassName, ...props }: CalendarGridProps) => {
+const CalendarGrid = ({ monthIndex = 0, classNames, ...props }: CalendarGridProps) => {
 
 	const { currentDate, weekStartDay } = useCalendar();
 
@@ -20,15 +22,18 @@ const CalendarGrid = ({ monthIndex = 0, weekClassName, dayClassName, ...props }:
 	date.setMonth(date.getMonth() + monthIndex);
 
 	return (
-		<tbody { ...props }>
+		<tbody
+			{ ...props }
+			role="rowgroup"
+		>
 			{
 				buildCalendarGrid(date.getMonth(), date.getFullYear(), { weekStartDay })
 					.map((week, index) => (
 						<CalendarWeek
 							key={ index }
-							className={ weekClassName }
+							className={ classNames?.week }
+							classNames={ { day: classNames?.day } }
 							currentDate={ date }
-							dayClassName={ dayClassName }
 							week={ week }
 						/>
 					))

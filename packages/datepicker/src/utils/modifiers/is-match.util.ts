@@ -37,7 +37,10 @@ export const isMatch = (day: Date, matchers: Matcher[]): boolean => {
 			return matcher.includes(day);
 		}
 		if (isDateRange(matcher)) {
-			return isInDateRange(day, matcher.from, matcher.to);
+			return isInDateRange(day, {
+				from: matcher.from,
+				to: matcher.to,
+			});
 		}
 		if (isWeekDayType(matcher)) {
 			return matcher === getWeekDayFromDate(day);
