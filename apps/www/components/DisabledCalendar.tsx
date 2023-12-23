@@ -4,15 +4,15 @@ import { Calendar } from '@bryanberger/datepicker';
 import { Label } from '@radix-ui/react-label';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const SimpleDatePicker = () => {
+const DisabledCalendar = () => {
 
 	return (
 		<div className="space-y-4">
-			<Label>Simple calendar</Label>
+			<Label>Disabled calendar</Label>
 			<Calendar
 				className="rounded-md border p-3"
-				defaultSelected={ new Date() }
 				weekStartDay="monday"
+				disabled
 				showOutsideDates
 			>
 				<Calendar.Header className="relative w-full">
@@ -43,4 +43,4 @@ const SimpleDatePicker = () => {
 	);
 };
 
-export default SimpleDatePicker;
+export default DisabledCalendar;

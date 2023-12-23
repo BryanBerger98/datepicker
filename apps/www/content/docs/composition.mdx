@@ -1,0 +1,95 @@
+---
+title: Composition
+description: Compose your calendar using the components provided.
+---
+
+## Introduction to composition
+
+If you use components libraries like [Radix UI](https://www.radix-ui.com/), you should already know what composition is. It's the ability to use multiple components together to create new ones.
+
+The advantage of composition is that it allows you to create multiple different components that share the same core logic and to give them different behaviors and styles.
+
+To know more about composition, you can read [this article](https://frontendmastery.com/posts/advanced-react-component-composition-guide/) by [Frontend Mastery](https://frontendmastery.com).
+
+## Example
+
+Let's say you want to create a calendar with a header and a body. Most of the libraries will provide you a `Calendar` component that will render both the header and the body. But what if you dont want the header ? Or what if you want to add a footer?
+
+With [Datepicker](https://datepicker.bryanberger.dev), you can create a customer `Calendar` component that will use the `Header`, `Content` and `Grid` or the main `Calendar` component.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+		>
+			<Calendar.Header>
+				<Calendar.Title />
+			</Calendar.Header>
+			<Calendar.Content>
+				<Calendar.Grid />
+			</Calendar.Content>
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+Notice that we added a `Title` too but it's not required. You can use the `Calendar.Header` component with **any children you want**.
+
+I am sure you begin to see the advantage of composition here.
+
+You can also add weekdays to your calendar by using the `Head` component inside the `Content`.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+		>
+			<Calendar.Header>
+				<Calendar.Title />
+			</Calendar.Header>
+			<Calendar.Content>
+				<Calendar.Head />
+				<Calendar.Grid />
+			</Calendar.Content>
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+## Styling
+
+The `Calendar` component is a composition of multiple components. It means that you can style each component individually.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+		>
+			<Calendar.Header className="bg-gray-100">
+				<Calendar.Title className="text-gray-700" />
+			</Calendar.Header>
+			<Calendar.Content>
+				<Calendar.Grid className="bg-gray-100" />
+			</Calendar.Content>
+		</Calendar>
+	);
+};
+```
+
+To know more about styling, you can read the [styling](/docs/styling) section.

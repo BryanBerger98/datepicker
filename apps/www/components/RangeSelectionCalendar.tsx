@@ -4,14 +4,16 @@ import { Calendar } from '@bryanberger/datepicker';
 import { Label } from '@radix-ui/react-label';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const SimpleDatePicker = () => {
+const RangeSelectionCalendar = () => {
 
 	return (
 		<div className="space-y-4">
-			<Label>Simple calendar</Label>
+			<Label>Range selection calendar</Label>
 			<Calendar
 				className="rounded-md border p-3"
-				defaultSelected={ new Date() }
+				defaultMonth={ new Date('2023-12-12') }
+				defaultSelected={ [ new Date('2023-12-12'), new Date('2023-12-21') ] }
+				mode="range"
 				weekStartDay="monday"
 				showOutsideDates
 			>
@@ -43,4 +45,4 @@ const SimpleDatePicker = () => {
 	);
 };
 
-export default SimpleDatePicker;
+export default RangeSelectionCalendar;

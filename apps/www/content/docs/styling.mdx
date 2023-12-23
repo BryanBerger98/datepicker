@@ -1,0 +1,131 @@
+---
+title: Styling
+description: Customize the appearance of your calendar.
+---
+
+## Styling the calendar
+
+The calendar is styled using CSS. You can either use the very basic default styles or override them with your own.
+
+The default styles are very basic and are meant to be overridden. They are directly written in the components.
+
+To override the styles, you can use the `style` prop or use CSS classes like the ones from [Tailwind CSS](https://tailwindcss.com/).
+
+Here is an example with Tailwind CSS and icons from [Lucide](https://lucide.dev/):
+
+<div className="flex justify-center">
+	<StyledCalendar />
+</div>
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const StyledCalendar = () => {
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+		>
+			<Calendar.Header className="relative w-full">
+				<Calendar.Title className="text-sm font-medium" />
+				<div className="space-x-1 flex items-center">
+					<Calendar.NavButton
+						className="inline-flex items-center justify-center rounded-md text-sm font-medium h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+						direction="previous"
+					>
+						<ChevronLeft className="h-4 w-4" />
+					</Calendar.NavButton>
+					<Calendar.NavButton
+						className="inline-flex items-center justify-center rounded-md text-sm font-medium h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
+						direction="next"
+					>
+						<ChevronRight className="h-4 w-4" />
+					</Calendar.NavButton>
+				</div>
+			</Calendar.Header>
+			<Calendar.Content>
+				<Calendar.Head />
+				<Calendar.Grid/>
+			</Calendar.Content>
+		</Calendar>
+	);
+};
+
+export default StyledCalendar;
+```
+
+## Styling the grid
+
+The grid is a table body with rows and cells. To customize week rows and day cells, you can use the `classNames` prop on the `Grid` component:
+
+```tsx
+<Calendar.Grid
+	classNames={{
+		day: 'rounded-md',
+		week: '',
+	}}
+/>
+```
+
+## Styling conditionaly
+
+Each day cell has a set of data attributes that you can use to style it conditionaly.
+
+**Available data attributes:**
+
+* `data-is-selected`: The day is selected.
+* `data-is-disabled`: The day is disabled.
+* `data-is-hidden`: The day is hidden.
+* `data-is-today`: The day is today.
+* `data-is-first`: The day is the first of the selected days.
+* `data-is-last`: The day is the last of the selected days.
+
+The following example will style the selected days, the first and last days of the selected range:
+
+<div className="flex justify-center">
+	<StyledCalendar2 />
+</div>
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const StyledCalendar = () => {
+
+	return (
+		<Calendar
+			className="rounded-md border p-3"
+			mode="range"
+			weekStartDay="monday"
+		>
+			<Calendar.Header className="relative w-full">
+				<Calendar.Title className="text-sm font-medium" />
+				<div className="space-x-1 flex items-center">
+					<Calendar.NavButton
+						className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+						direction="previous"
+					>
+						<ChevronLeft className="h-4 w-4" />
+					</Calendar.NavButton>
+					<Calendar.NavButton
+						className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
+						direction="next"
+					>
+						<ChevronRight className="h-4 w-4" />
+					</Calendar.NavButton>
+				</div>
+			</Calendar.Header>
+			<Calendar.Content>
+				<Calendar.Head />
+				<Calendar.Grid
+					classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+				/>
+			</Calendar.Content>
+		</Calendar>
+	);
+};
+
+export default StyledCalendar;
+```
+

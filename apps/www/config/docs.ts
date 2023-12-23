@@ -11,10 +11,10 @@ export const docsConfig: DocsConfig = {
 			title: 'Documentation',
 			href: '/docs',
 		},
-		{
-			title: 'Examples',
-			href: '/examples',
-		},
+		// {
+		// 	title: 'Examples',
+		// 	href: '/examples',
+		// },
 		{
 			title: 'GitHub',
 			href: 'https://github.com/BryanBerger98/datepicker',
@@ -48,13 +48,13 @@ export const docsConfig: DocsConfig = {
 					items: [],
 				},
 				{
-					title: 'Configuration',
-					href: '/docs/configuration',
+					title: 'Styling',
+					href: '/docs/styling',
 					items: [],
 				},
 				{
-					title: 'Styles',
-					href: '/docs/styles',
+					title: 'Configuration',
+					href: '/docs/configuration',
 					items: [],
 				},
 				{
@@ -82,6 +82,16 @@ export const docsConfig: DocsConfig = {
 					href: '/docs/calendar/mutiple-dates-selection',
 					items: [],
 				},
+				{
+					title: 'Range selection',
+					href: '/docs/calendar/range-selection',
+					items: [],
+				},
+				{
+					title: 'Controlled calendar component',
+					href: '/docs/calendar/controlled-calendar-component',
+					items: [],
+				},
 			],
 		},
 		{
@@ -94,7 +104,7 @@ export const docsConfig: DocsConfig = {
 				},
 				{
 					title: 'Required',
-					href: '/docs/helpers/disabled',
+					href: '/docs/helpers/required',
 					items: [],
 				},
 				{

@@ -1,0 +1,73 @@
+---
+title: Configuration
+description: Configure the behavior of your calendar.
+---
+
+## Calendar mode
+
+The calendar can be configured in 3 different modes through the `mode` prop with the following values:
+
+- `single` - **Default value**. The calendar will allow the user to select a single date. See [Simple selection](/docs/calendar/simple) for more information.
+- `multiple` - The calendar will allow the user to select multiple dates. See [Multiple dates selection](/docs/calendar/multiple-dates-selection) for more information.
+- `range` - The calendar will allow the user to select a range of dates. See [Range selection](/docs/calendar/range-selection) for more information.
+
+**Example of use:**
+
+```tsx
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			mode="range"
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## First day of the week
+
+The first day of the week can be configured through the `weekStartDay` prop with the following values:
+
+- `sunday` - **Default value**. 
+- `monday`.
+- `tuesday`.
+- `wednesday`.
+- `thursday`.
+- `friday`.
+- `saturday`.
+
+**Example of use:**
+
+```tsx
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			weekStartDay="monday"
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## Show outside days
+
+The calendar can be configured to show or hide the days outside the current month through the `boolean` prop named `showOutsideDates` when set to `true`.
+
+**Example of use:**
+
+```tsx
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			showOutsideDates
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
