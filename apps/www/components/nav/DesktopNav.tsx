@@ -9,6 +9,7 @@ import { docsConfig } from '@/config/docs';
 import { siteConfig } from '@/config/site';
 
 import Icons from '../icons';
+import LogoIcon from '../icons/logo';
 
 const DesktopNav = () => {
 	const pathname = usePathname();
@@ -19,6 +20,7 @@ const DesktopNav = () => {
 				className="mr-6 flex items-center space-x-2"
 				href="/"
 			>
+				<LogoIcon />
 				<span className="hidden font-bold sm:inline-block">
 					{ siteConfig.name }
 				</span>

@@ -53,7 +53,7 @@ module.exports = {
 		'no-multi-spaces': 'warn',
 		'no-multiple-empty-lines': 'warn',
 		'no-empty-function': 'warn',
-		'require-await': 'error',
+		'require-await': 'off',
 		'template-curly-spacing': [ 'warn', 'always' ],
 		'brace-style': [ 'warn', '1tbs' ],
 		'prefer-destructuring': [

@@ -1,4 +1,4 @@
-# BryanBerger98/datepicker
+# @bryanberger/datepicker
 
 React composable date picker inspired by react-day-picker.
 
