@@ -19,6 +19,9 @@ import { NpmCommands } from '@/types/unist.type';
 
 import { CopyButton, CopyNpmCommandButton } from './copy-button';
 import SimpleCalendar from './examples/SimpleCalendar';
+import SingleCalendar from './examples/single/SingleCalendar';
+import SingleCalendar2 from './examples/single/SingleCalendar2';
+import SingleCalendar3 from './examples/single/SingleCalendar3';
 import StyledCalendar from './examples/StyledCalendar';
 import StyledCalendar2 from './examples/StyledCalendar2';
 
@@ -316,6 +319,9 @@ const components = {
 	SimpleCalendar: () => <SimpleCalendar />,
 	StyledCalendar: () => <StyledCalendar />,
 	StyledCalendar2: () => <StyledCalendar2 />,
+	SingleCalendar: () => <SingleCalendar />,
+	SingleCalendar2: () => <SingleCalendar2 />,
+	SingleCalendar3: () => <SingleCalendar3 />,
 };
 
 interface MdxProps {

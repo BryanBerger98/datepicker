@@ -59,12 +59,31 @@ The calendar can be configured to show or hide the days outside the current mont
 
 **Example of use:**
 
-```tsx
+```tsx showLineNumbers
 const MyCalendar = () => {
 
 	return (
 		<Calendar
 			showOutsideDates
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## Default month
+
+The calendar can be configured to show a specific month through the `defaultMonth` prop by passing a `Date` object.
+
+**Example of use:**
+
+```tsx showLineNumbers
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			defaultMonth={ new Date(2021, 0, 1) }
 		>
 			{ /* ... */ }
 		</Calendar>

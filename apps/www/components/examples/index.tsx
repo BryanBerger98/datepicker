@@ -22,4 +22,19 @@ export const CalendarExamples: Record<string, CalendarExample> = {
 		registryDependencies: undefined,
 		component: lazy(() => import('@/components/examples/StyledCalendar2')),
 	},
+	'single': {
+		name: 'single',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/single/SingleCalendar')),
+	},
+	'single2': {
+		name: 'single2',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/single/SingleCalendar2')),
+	},
+	'single3': {
+		name: 'single3',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/single/SingleCalendar3')),
+	},
 };

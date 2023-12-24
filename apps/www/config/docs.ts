@@ -65,31 +65,21 @@ export const docsConfig: DocsConfig = {
 			],
 		},
 		{
-			title: 'Calendars',
+			title: 'Selecting dates',
 			items: [
 				{
-					title: 'Simple',
-					href: '/docs/calendar/simple',
+					title: 'Single date',
+					href: '/docs/selecting-dates/single-date',
 					items: [],
 				},
 				{
-					title: 'Multiple months',
-					href: '/docs/calendar/multiple-months',
+					title: 'Multiple dates',
+					href: '/docs/selecting-dates/multiple-dates',
 					items: [],
 				},
 				{
-					title: 'Multiple dates selection',
-					href: '/docs/calendar/mutiple-dates-selection',
-					items: [],
-				},
-				{
-					title: 'Range selection',
-					href: '/docs/calendar/range-selection',
-					items: [],
-				},
-				{
-					title: 'Controlled calendar component',
-					href: '/docs/calendar/controlled-calendar-component',
+					title: 'Range of dates',
+					href: '/docs/selecting-dates/range-of-dates',
 					items: [],
 				},
 			],
@@ -114,6 +104,21 @@ export const docsConfig: DocsConfig = {
 					disabled: true,
 				},
 				
+			],
+		},
+		{
+			title: 'Advanced',
+			items: [
+				{
+					title: 'Multiple months',
+					href: '/docs/advanced/multiple-months',
+					items: [],
+				},
+				{
+					title: 'Controlled calendar component',
+					href: '/docs/advanced/controlled-calendar-component',
+					items: [],
+				},
 			],
 		},
 	],
