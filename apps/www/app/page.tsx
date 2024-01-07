@@ -20,7 +20,7 @@ const Home = () => {
 				<LogoIcon size={ 64 } />
 				<PageHeaderHeading>Compose your calendar</PageHeaderHeading>
 				<PageHeaderDescription>
-					React composable date picker inspired by react-day-picker. Open Source. Composable. Customizable.
+					Flexible date picker for React. Composable. Customizable. Open Source.
 				</PageHeaderDescription>
 				<PageActions>
 					<Link

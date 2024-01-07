@@ -14,6 +14,15 @@ const Footer = () => {
 					>
 						Bryan Berger
 					</a>
+					{ ' ' }and inspired by{ ' ' }
+					<a
+						className="font-medium underline underline-offset-4"
+						href="https://react-day-picker.js.org/"
+						rel="noreferrer"
+						target="_blank"
+					>
+						react-day-picker
+					</a>
 					. The source code is available on{ ' ' }
 					<a
 						className="font-medium underline underline-offset-4"

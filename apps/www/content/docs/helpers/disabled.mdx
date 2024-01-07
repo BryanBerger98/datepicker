@@ -2,3 +2,133 @@
 title: Disabled dates
 description: Disable dates selection in a calendar
 ---
+
+## Usage
+
+The `Calendar` component allows to disable dates in a calendar. This can be done by passing different types of values to the `disabled` prop.
+
+You can pass the following values to the `disabled` prop:
+
+{/* boolean | ((date: Date) => boolean) | Date | Date[] | DateBefore | DateAfter | DateInterval | DateRange | WeekDay | WeekDay[] */}
+
+| Type | Details | Description |
+|-----|-----|-----|
+| `boolean` | `true \| false` | Disable all dates |
+| `function` | `(date: Date) => boolean` | Disable dates based on a function |
+| `Date` | `new Date()` | Disable a specific date |
+| `Date[]` | `[new Date(), new Date()]` | Disable multiple dates |
+| `DateBefore` | `{ before: new Date() }` | Disable dates before a specific date |
+| `DateAfter` | `{ after: new Date() }` | Disable dates after a specific date |
+| `DateInterval` | `{ before: new Date(), after: new Date() }` | Disable dates in a specific interval |
+| `DateRange` | `{ from: new Date(), to: new Date() }` | Disable dates in a specific range |
+| `WeekDay` | `"sunday" \| "monday" \| "tuesday" \| "wednesday" \| "thursday" \| "friday" \| "saturday"` | Disable dates based on a week day |
+| `WeekDay[]` | `["sunday", "monday", "tuesday", ...]` | Disable dates based on multiple week days |
+
+## Examples
+
+### Disable all dates
+
+<div className="flex justify-center">
+	<DisabledCalendar />
+</div>
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			disabled
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+### Disable specific dates
+
+<div className="flex justify-center">
+	<DisabledDatesCalendar />
+</div>
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	const today = new Date();
+	const tomorrow = new Date();
+	tomorrow.setDate(today.getDate() + 1);
+
+	return (
+		<Calendar
+			disabled={ [ today, tomorrow ] }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+### Disable dates interval
+
+<div className="flex justify-center">
+	<DisabledDatesIntervalCalendar />
+</div>
+
+```tsx
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	const today = new Date();
+	const in10Days = new Date();
+	in10Days.setDate(today.getDate() + 10);
+
+	return (
+		<Calendar
+			disabled={ {
+				before: today,
+				after: in10Days,
+			} }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+### Disable week days
+
+<div className="flex justify-center">
+	<DisabledWeekDaysCalendar />
+</div>
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			disabled={ [ 'monday', 'sunday' ] }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```

@@ -37,4 +37,69 @@ export const CalendarExamples: Record<string, CalendarExample> = {
 		registryDependencies: undefined,
 		component: lazy(() => import('@/components/examples/single/SingleCalendar3')),
 	},
+	'multiple': {
+		name: 'multiple',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/multiple/MultipleCalendar')),
+	},
+	'multiple2': {
+		name: 'multiple2',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/multiple/MultipleCalendar2')),
+	},
+	'multiple3': {
+		name: 'multiple3',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/multiple/MultipleCalendar3')),
+	},
+	'multiple4': {
+		name: 'multiple4',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/multiple/MultipleCalendar4')),
+	},
+	'range': {
+		name: 'range',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/range/RangeCalendar')),
+	},
+	'range2': {
+		name: 'range2',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/range/RangeCalendar2')),
+	},
+	'range3': {
+		name: 'range3',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/range/RangeCalendar3')),
+	},
+	'range4': {
+		name: 'range4',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/range/RangeCalendar4')),
+	},
+	'disabled': {
+		name: 'disabled',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/disabled/DisabledCalendar')),
+	},
+	'disabledDates': {
+		name: 'disabledDates',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/disabled/DisabledDatesCalendar')),
+	},
+	'disabledDatesInterval': {
+		name: 'disabledDatesInterval',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/disabled/DisabledDatesIntervalCalendar')),
+	},
+	'disabledWeekDays': {
+		name: 'disabledWeekDays',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/disabled/DisabledWeekDaysCalendar')),
+	},
+	'required': {
+		name: 'required',
+		registryDependencies: undefined,
+		component: lazy(() => import('@/components/examples/RequiredCalendar')),
+	},
 };

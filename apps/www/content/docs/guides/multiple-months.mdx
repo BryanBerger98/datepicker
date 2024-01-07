@@ -1,0 +1,312 @@
+---
+title: Multiple months
+description: Compose your calendar to show multiple months at once.
+---
+
+You can display multiple months at once by composing multiple `CalendarContent` together.
+
+Here is an example of a calendar showing two months at once:
+
+<div className="flex justify-center pt-8">
+  <MultipleMonthsCalendar />
+</div>
+
+## Set up the calendar
+
+First, you need to add a `Calendar` component:
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+
+const MultipleMonthsCalendar = () => {
+
+	const today = new Date();
+
+	return (
+		<Calendar
+			className="rounded-md border p-3 !flex-row gap-4"
+			defaultSelected={ today }
+			weekStartDay="monday"
+			showOutsideDates
+		>
+
+		</Calendar>
+	);
+};
+```
+
+## Divide the calendar
+
+Then, divide the `Calendar` with `div` elements and add a `Header` and a `Content` component to each of them:
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+
+const MultipleMonthsCalendar = () => {
+
+	const today = new Date();
+
+	return (
+		<Calendar
+			className="rounded-md border p-3 !flex-row gap-4"
+			defaultSelected={ today }
+			weekStartDay="monday"
+			showOutsideDates
+		>
+			<div>
+				<Calendar.Header>
+				</Calendar.Header>
+				<Calendar.Content>
+				</Calendar.Content>
+			</div>
+			<div>
+				<Calendar.Header>
+				</Calendar.Header>
+				<Calendar.Content>
+				</Calendar.Content>
+			</div>
+		</Calendar>
+	);
+};
+```
+
+## Set up headers
+
+Add a `Title` component and pagination buttons to each `Header`:
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MultipleMonthsCalendar = () => {
+
+	const today = new Date();
+
+	return (
+		<Calendar
+			className="rounded-md border p-3 !flex-row gap-4"
+			defaultSelected={ today }
+			weekStartDay="monday"
+			showOutsideDates
+		>
+			<div>
+				<Calendar.Header className="relative w-full">
+					<Calendar.Title className="text-sm font-medium" />
+					<div className="space-x-1 flex items-center">
+						<Calendar.NavButton
+							className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+							direction="previous"
+						>
+							<ChevronLeft className="h-4 w-4" />
+						</Calendar.NavButton>
+					</div>
+				</Calendar.Header>
+				<Calendar.Content>
+				</Calendar.Content>
+			</div>
+			<div>
+				<Calendar.Header>
+					<Calendar.Title className="text-sm font-medium" />
+					<div className="space-x-1 flex items-center">
+						<Calendar.NavButton
+							className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
+							direction="next"
+						>
+							<ChevronRight className="h-4 w-4" />
+						</Calendar.NavButton>
+					</div>
+				</Calendar.Header>
+				<Calendar.Content>
+				</Calendar.Content>
+			</div>
+		</Calendar>
+	);
+};
+```
+
+## Setup grids
+
+Add a `Head` and a `Grid` component to each calendar `Content`:
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MultipleMonthsCalendar = () => {
+
+	const today = new Date();
+
+	return (
+		<Calendar
+			className="rounded-md border p-3 !flex-row gap-4"
+			defaultSelected={ today }
+			weekStartDay="monday"
+			showOutsideDates
+		>
+			<div>
+				<Calendar.Header className="relative w-full">
+					<Calendar.Title className="text-sm font-medium" />
+					<div className="space-x-1 flex items-center">
+						<Calendar.NavButton
+							className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+							direction="previous"
+						>
+							<ChevronLeft className="h-4 w-4" />
+						</Calendar.NavButton>
+					</div>
+				</Calendar.Header>
+				<Calendar.Content>
+					<Calendar.Head />
+					<Calendar.Grid
+						classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+					/>
+				</Calendar.Content>
+			</div>
+			<div>
+				<Calendar.Header>
+					<Calendar.Title className="text-sm font-medium" />
+					<div className="space-x-1 flex items-center">
+						<Calendar.NavButton
+							className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
+							direction="next"
+						>
+							<ChevronRight className="h-4 w-4" />
+						</Calendar.NavButton>
+					</div>
+				</Calendar.Header>
+				<Calendar.Content>
+					<Calendar.Head />
+					<Calendar.Grid
+						classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+					/>
+				</Calendar.Content>
+			</div>
+		</Calendar>
+	);
+};
+```
+
+## Set up months
+
+You choose which months to show by using the `monthIndex` prop on the `Title` and `Grid` components. It will link the `Title` and `Grid` together.
+
+For the first block:
+
+```tsx showLineNumbers
+<div>
+	<Calendar.Header className="relative w-full">
+		<Calendar.Title
+			className="text-sm font-medium"
+			monthIndex={ 0 }
+		/>
+		<div className="space-x-1 flex items-center">
+			<Calendar.NavButton
+				className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+				direction="previous"
+			>
+				<ChevronLeft className="h-4 w-4" />
+			</Calendar.NavButton>
+		</div>
+	</Calendar.Header>
+	<Calendar.Content>
+		<Calendar.Head />
+		<Calendar.Grid
+			classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+			monthIndex={ 0 }
+		/>
+	</Calendar.Content>
+</div>
+```
+
+For the second block:
+
+```tsx showLineNumbers
+<div>
+	<Calendar.Header className="relative w-full">
+		<Calendar.Title
+			className="text-sm font-medium"
+			monthIndex={ 1 }
+		/>
+		<div className="space-x-1 flex items-center">
+			<Calendar.NavButton
+				className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+				direction="previous"
+			>
+				<ChevronLeft className="h-4 w-4" />
+			</Calendar.NavButton>
+		</div>
+	</Calendar.Header>
+	<Calendar.Content>
+		<Calendar.Head />
+		<Calendar.Grid
+			classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+			monthIndex={ 1 }
+		/>
+	</Calendar.Content>
+</div>
+```
+
+## Final result
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MultipleMonthsCalendar = () => {
+
+	return (
+		<Calendar
+			className="rounded-md border p-3 !flex-row gap-4"
+			defaultSelected={ new Date() }
+			weekStartDay="monday"
+			showOutsideDates
+		>
+			<div>
+				<Calendar.Header className="relative w-full">
+					<Calendar.Title className="text-sm font-medium" />
+					<div className="space-x-1 flex items-center">
+						<Calendar.NavButton
+							className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
+							direction="previous"
+						>
+							<ChevronLeft className="h-4 w-4" />
+						</Calendar.NavButton>
+					</div>
+				</Calendar.Header>
+				<Calendar.Content>
+					<Calendar.Head />
+					<Calendar.Grid
+						classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+						monthIndex={ 0 }
+					/>
+				</Calendar.Content>
+			</div>
+			<div>
+				<Calendar.Header className="relative w-full">
+					<Calendar.Title
+						className="text-sm font-medium"
+						monthIndex={ 1 }
+					/>
+					<div className="space-x-1 flex items-center">
+						<Calendar.NavButton
+							className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
+							direction="next"
+						>
+							<ChevronRight className="h-4 w-4" />
+						</Calendar.NavButton>
+					</div>
+				</Calendar.Header>
+				<Calendar.Content>
+					<Calendar.Head />
+					<Calendar.Grid
+						classNames={ { day: 'h-9 w-9 text-center text-sm p-0 relative data-[is-selected=false]:bg-accent/50 data-[is-selected=true]:bg-accent data-[is-first=true]:rounded-l-md data-[is-last=true]:rounded-r-md focus-within:relative focus-within:z-20' } }
+						monthIndex={ 1 }
+					/>
+				</Calendar.Content>
+			</div>
+		</Calendar>
+	);
+};
+
+export default MultipleMonthsCalendar;
+```

@@ -90,3 +90,22 @@ const MyCalendar = () => {
 	);
 };
 ```
+
+## Months range
+
+The calendar can be configured to set a selectable range of months through the `from` and `to` props by passing a `Date` object.
+
+```tsx showLineNumbers
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			defaultMonth={ new Date(2021, 0, 1) }
+			from={ new Date(2024, 0, 1) } // Starts on January 2024
+			to={ new Date(2024, 2, 29) } // Ends on March 2024
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```

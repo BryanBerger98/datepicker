@@ -1,22 +1,19 @@
----
-title: Simple calendar
-description: For selecting one date at a time.
----
+'use client';
 
-
-
-```tsx showLineNumbers
 import { Calendar } from '@bryanberger/datepicker';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const MyDatePicker = () => {
+const MultipleCalendar2 = () => {
 
 	const today = new Date();
+	const tomorrow = new Date();
+	tomorrow.setDate(today.getDate() + 1);
 
 	return (
 		<Calendar
 			className="border rounded-md p-3"
-			defaultSelected={ today }
+			defaultSelected={ [ today, tomorrow ] }
+			mode="multiple"
 		>
 			<Calendar.Header className="!justify-between !w-full pl-2">
 				<Calendar.Title />
@@ -39,5 +36,4 @@ const MyDatePicker = () => {
 	);
 };
 
-export default MyDatePicker;
-```
+export default MultipleCalendar2;

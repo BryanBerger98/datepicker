@@ -2,3 +2,29 @@
 title: Required dates
 description: Require dates selection in a calendar.
 ---
+
+When you set a calendar to `required`, the user must select at least one date and can't clear the selection.
+
+For example:
+
+<div className="flex justify-center">
+	<RequiredCalendar />
+</div>
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			required
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```

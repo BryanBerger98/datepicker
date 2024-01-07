@@ -107,16 +107,11 @@ export const docsConfig: DocsConfig = {
 			],
 		},
 		{
-			title: 'Advanced',
+			title: 'Guides',
 			items: [
 				{
 					title: 'Multiple months',
-					href: '/docs/advanced/multiple-months',
-					items: [],
-				},
-				{
-					title: 'Controlled calendar component',
-					href: '/docs/advanced/controlled-calendar-component',
+					href: '/docs/guides/multiple-months',
 					items: [],
 				},
 			],

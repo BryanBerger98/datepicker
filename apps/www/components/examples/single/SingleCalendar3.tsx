@@ -7,7 +7,7 @@ import { useState } from 'react';
 const SingleCalendar3 = () => {
 
 	const today = new Date();
-	const [ selected, setSelected ] = useState(today);
+	const [ selected, setSelected ] = useState<Date | null>(today);
 
 	return (
 		<div>
@@ -34,7 +34,7 @@ const SingleCalendar3 = () => {
 					/>
 				</Calendar.Content>
 			</Calendar>
-			<p>Selected date: { selected.toLocaleDateString() }</p>
+			<p>Selected date: { selected?.toLocaleDateString() }</p>
 		</div>
 	);
 };

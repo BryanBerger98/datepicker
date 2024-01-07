@@ -18,12 +18,26 @@ import { Event } from '@/lib/events';
 import { NpmCommands } from '@/types/unist.type';
 
 import { CopyButton, CopyNpmCommandButton } from './copy-button';
+import DisabledCalendar from './examples/disabled/DisabledCalendar';
+import DisabledDatesCalendar from './examples/disabled/DisabledDatesCalendar';
+import DisabledDatesIntervalCalendar from './examples/disabled/DisabledDatesIntervalCalendar';
+import DisabledWeekDaysCalendar from './examples/disabled/DisabledWeekDaysCalendar';
+import MultipleCalendar from './examples/multiple/MultipleCalendar';
+import MultipleCalendar2 from './examples/multiple/MultipleCalendar2';
+import MultipleCalendar3 from './examples/multiple/MultipleCalendar3';
+import MultipleCalendar4 from './examples/multiple/MultipleCalendar4';
+import RangeCalendar from './examples/range/RangeCalendar';
+import RangeCalendar2 from './examples/range/RangeCalendar2';
+import RangeCalendar3 from './examples/range/RangeCalendar3';
+import RangeCalendar4 from './examples/range/RangeCalendar4';
+import RequiredCalendar from './examples/RequiredCalendar';
 import SimpleCalendar from './examples/SimpleCalendar';
 import SingleCalendar from './examples/single/SingleCalendar';
 import SingleCalendar2 from './examples/single/SingleCalendar2';
 import SingleCalendar3 from './examples/single/SingleCalendar3';
 import StyledCalendar from './examples/StyledCalendar';
 import StyledCalendar2 from './examples/StyledCalendar2';
+import MultipleMonthsCalendar from './MultipleMonthsCalendar';
 
 const components = {
 	Accordion,
@@ -322,6 +336,20 @@ const components = {
 	SingleCalendar: () => <SingleCalendar />,
 	SingleCalendar2: () => <SingleCalendar2 />,
 	SingleCalendar3: () => <SingleCalendar3 />,
+	MultipleCalendar: () => <MultipleCalendar />,
+	MultipleCalendar2: () => <MultipleCalendar2 />,
+	MultipleCalendar3: () => <MultipleCalendar3 />,
+	MultipleCalendar4: () => <MultipleCalendar4 />,
+	RangeCalendar: () => <RangeCalendar />,
+	RangeCalendar2: () => <RangeCalendar2 />,
+	RangeCalendar3: () => <RangeCalendar3 />,
+	RangeCalendar4: () => <RangeCalendar4 />,
+	DisabledCalendar: () => <DisabledCalendar />,
+	DisabledDatesCalendar: () => <DisabledDatesCalendar />,
+	DisabledDatesIntervalCalendar: () => <DisabledDatesIntervalCalendar />,
+	DisabledWeekDaysCalendar: () => <DisabledWeekDaysCalendar />,
+	RequiredCalendar: () => <RequiredCalendar />,
+	MultipleMonthsCalendar: () => <MultipleMonthsCalendar />,
 };
 
 interface MdxProps {

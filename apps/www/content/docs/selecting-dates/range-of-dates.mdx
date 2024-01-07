@@ -1,0 +1,154 @@
+---
+title: Range of dates selection
+description: For selecting a range of dates.
+---
+
+## Usage
+
+To activate the range of dates selection mode, set the `mode` prop to `range`.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+			mode="range"
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+<div className="flex justify-center">
+	<RangeCalendar />
+</div>
+
+## Default selected dates
+
+You can set the default selected range of dates by setting an 2 elements length array of `Date` object to the `defaultSelected` prop.
+
+The first element is for the start date and the second element is for the end date.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	const today = new Date();
+	const inTwoDays = new Date();
+	inTwoDays.setDate(today.getDate() + 2);
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+			mode="range"
+			defaultSelected={ [ today, inTwoDays ] }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+<div className="flex justify-center">
+	<RangeCalendar2 />
+</div>
+
+## Limit dates selection
+
+You can limit the dates selection by setting the `min` and `max` props.
+
+```tsx showLineNumbers
+const MyDatePicker = () => {
+
+	const today = new Date();
+	const inTwoDays = new Date();
+	inTwoDays.setDate(today.getDate() + 2);
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+			mode="range"
+			defaultSelected={ [ today, inTwoDays ] }
+			min={ 2 }
+			max={ 6 }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+<div className="flex justify-center">
+	<RangeCalendar3 />
+</div>
+
+## Control the selected date
+
+You can make the `Calendar` component controlled by passing the `selected` prop. You will then have to update the `selected` prop yourself by using the `onSelect` callback function.
+
+You can now control the entire selection process.
+
+```tsx showLineNumbers
+const isSameDay = (date1: Date, date2: Date) => {
+	return date1.getDate() === date2.getDate()
+		&& date1.getMonth() === date2.getMonth()
+		&& date1.getFullYear() === date2.getFullYear();
+};
+
+const MyDatePicker = () => {
+
+	const today = new Date();
+	const tomorrow = new Date();
+	tomorrow.setDate(today.getDate() + 1);
+
+	const [ selected, setSelected ] = useState<Date[]>([ today, tomorrow ]);
+
+	const handleSelect = (date: Date) => {
+		setSelected((prevSelected) => {
+			const dateIndex = prevSelected.findIndex((prevDate) => isSameDay(prevDate, date));
+			const isDateAlreadySelected = dateIndex !== -1;
+			if (isDateAlreadySelected) {
+				return prevSelected.filter((_, i) => i !== dateIndex);
+			}
+			return [ ...prevSelected, date ];
+		});
+	};
+
+	return (
+		<div>
+			<Calendar
+				className="border rounded-md p-3"
+				defaultSelected={ [ today, tomorrow ] }
+				mode="multiple"
+				selected={ selected }
+				onSelect={ handleSelect }
+			>
+				{ /* ... */ }
+			</Calendar>
+			<p>Selected dates:</p>
+			<ul className="list-disc pl-6">
+				{
+					selected.map((date) => (
+						<li key={ date.toISOString() }>{ date.toLocaleDateString() }</li>
+					))
+				}
+			</ul>
+		</div>
+	);
+};
+
+export default MyDatePicker;
+```
+
+<div className="flex justify-center">
+	<RangeCalendar4 />
+</div>
