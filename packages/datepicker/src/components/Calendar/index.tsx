@@ -12,14 +12,14 @@ import CalendarNavButton from './Header/CalendarNavButton';
 import CalendarTitle from './Header/CalendarTitle';
 
 export type CalendarMode = 'single' | 'multiple' | 'range';
-type DateSelection<T extends CalendarMode> = T extends 'single' ? (Date | null) : T extends 'multiple' ? Date[] : [ Date, Date ];
-type DateSelectedProp<T extends CalendarMode> = T extends 'single' ? Date : T extends 'multiple' ? Date[] : [ Date, Date ] | undefined;
-type SelectDateHandler<T extends CalendarMode, S extends DateSelectedProp<T>> = (value: S extends undefined ? DateSelection<T> : Date) => void;
+type DateSelection<TMode extends CalendarMode> = TMode extends 'range' ? [ Date, Date ] : TMode extends 'multiple' ? Date[] : (Date | null);
+type ControlledSelectDateHandler = (value: Date) => void;
+type UncontrolledSelectDateHander<TMode extends CalendarMode> = (value: DateSelection<TMode>) => void;
 
-type CalendarContextValue<T extends CalendarMode> = {
+type CalendarContextValue<TMode extends CalendarMode> = {
 	onSelect: (value: Date) => void;
 	mode: CalendarMode;
-	selected: DateSelection<T>;
+	selected: DateSelection<TMode>;
 	currentDate: Date;
 	onChangeCurrentDate: (date: Date) => void;
 	showOutsideDates?: boolean;
@@ -52,32 +52,53 @@ interface BaseCalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSele
 	required?: boolean;
 }
 
-interface SingleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+interface BaseSingleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
 	mode?: 'single';
 	defaultSelected?: Date;
-	selected?: Date;
-	onSelect?: SelectDateHandler<'single', DateSelectedProp<'single'>>;
 }
+interface ControlledSingleCalendarProps extends BaseSingleCalendarProps {
+	selected: DateSelection<'single'>;
+	onSelect: ControlledSelectDateHandler;
+}
+interface UncontrolledSingleCalendarProps extends BaseSingleCalendarProps {
+	selected?: undefined;
+	onSelect?: UncontrolledSelectDateHander<'single'>;
+}
+type SingleCalendarProps = ControlledSingleCalendarProps | UncontrolledSingleCalendarProps;
 
-interface MultipleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+interface BaseMultipleCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
 	mode: 'multiple';
 	defaultSelected?: Date[];
-	selected?: Date[];
-	onSelect?: SelectDateHandler<'multiple', DateSelectedProp<'multiple'>>;
 	min?: number;
 	max?: number;
 }
+interface ControlledMultipleCalendarProps extends BaseMultipleCalendarProps {
+	selected: DateSelection<'multiple'>;
+	onSelect: ControlledSelectDateHandler;
+}
+interface UncontrolledMultipleCalendarProps extends BaseMultipleCalendarProps {
+	selected?: undefined;
+	onSelect?: UncontrolledSelectDateHander<'multiple'>;
+}
+type MultipleCalendarProps = ControlledMultipleCalendarProps | UncontrolledMultipleCalendarProps;
 
-interface RangeCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
+interface BaseRangeCalendarProps extends Omit<BaseCalendarProps, 'min' | 'max'> {
 	mode: 'range';
 	defaultSelected?: [ Date, Date ];
-	selected?: [ Date, Date ];
-	onSelect?: SelectDateHandler<'range', DateSelectedProp<'range'>>;
 	min?: number;
 	max?: number;
 }
+interface ControlledRangeCalendarProps extends BaseRangeCalendarProps {
+	selected: DateSelection<'range'>;
+	onSelect: ControlledSelectDateHandler;
+}
+interface UncontrolledRangeCalendarProps extends BaseRangeCalendarProps {
+	selected?: undefined;
+	onSelect?: UncontrolledSelectDateHander<'range'>;
+}
+type RangeCalendarProps = ControlledRangeCalendarProps | UncontrolledRangeCalendarProps;
 
-type CalendarProps = SingleCalendarProps | MultipleCalendarProps | RangeCalendarProps;
+type CalendarProps<TMode extends CalendarMode = 'single'> = TMode extends 'range' ? RangeCalendarProps : TMode extends 'multiple' ? MultipleCalendarProps : SingleCalendarProps;
 
 type CalendarStatic = {
 	Header: typeof CalendarHeader;
@@ -88,9 +109,9 @@ type CalendarStatic = {
 	Grid: typeof CalendarGrid;
 }
 
-type CalendarComponent = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps & RefAttributes<HTMLDivElement>>> & CalendarStatic;
+type CalendarComponent<TMode extends CalendarMode = 'single'> = ForwardRefExoticComponent<PropsWithoutRef<CalendarProps<TMode> & RefAttributes<HTMLDivElement>>> & CalendarStatic;
 
-const CalendarInner = ({ children,
+const CalendarInner = <TMode extends CalendarMode = CalendarMode>({ children,
 	showOutsideDates = false,
 	defaultMonth = new Date(),
 	mode = 'single',
@@ -104,9 +125,9 @@ const CalendarInner = ({ children,
 	weekStartDay = 'sunday',
 	disabled = false,
 	required = false,
-	...props }: CalendarProps, ref: ForwardedRef<HTMLDivElement>) => {
+	...props }: CalendarProps<TMode>, ref: ForwardedRef<HTMLDivElement>) => {
 
-	const { min, max } = mode === 'multiple' || mode === 'range' ? props as MultipleCalendarProps | RangeCalendarProps : {
+	const { min, max } = mode === 'multiple' || mode === 'range' ? props as Partial<MultipleCalendarProps | RangeCalendarProps> : {
 		min: undefined,
 		max: undefined, 
 	};
@@ -118,12 +139,12 @@ const CalendarInner = ({ children,
 	const [ internalSelectedDate, setInternalSelectedDate ] = useState<DateSelection<typeof mode>>(defaultSelected || defaultSelectedFromProps);
 	const [ currentDate, setCurrentDate ] = useState<Date>(defaultMonth);
 
-	const selected = isControlled ? selectedFromProps : internalSelectedDate;
+	const selected: DateSelection<typeof mode> = isControlled ? selectedFromProps : internalSelectedDate;
 
 	const handleSelectDate = useCallback((date: Date) => {
 		if (isControlled) {
 			if (onSelect) {
-				(onSelect as SelectDateHandler<typeof mode, typeof selectedFromProps>)(date);
+				(onSelect as ControlledSelectDateHandler)(date);
 			}
 		} else {
 			setInternalSelectedDate(prevSelected => {
@@ -175,7 +196,7 @@ const CalendarInner = ({ children,
 	useEffect(() => {
 		if (!isControlled) {
 			if (onSelect) {
-				(onSelect as SelectDateHandler<typeof mode, typeof selectedFromProps>)(selected);
+				(onSelect as UncontrolledSelectDateHander<TMode>)(selected as DateSelection<TMode>);
 			}
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -263,7 +284,7 @@ const CalendarInner = ({ children,
 	);
 };
 
-const Calendar = forwardRef<HTMLDivElement, CalendarProps>(CalendarInner) as CalendarComponent;
+const Calendar = forwardRef<HTMLDivElement, CalendarProps>(CalendarInner) as CalendarComponent<CalendarMode>;
 
 Calendar.displayName = 'Calendar';
 

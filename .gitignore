@@ -12,6 +12,7 @@ build
 dist
 dist-ssr
 *.local
+.contentlayer
 
 # Editor directories and files
 .vscode/*

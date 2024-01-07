@@ -11,10 +11,10 @@ export const docsConfig: DocsConfig = {
 			title: 'Documentation',
 			href: '/docs',
 		},
-		{
-			title: 'Examples',
-			href: '/examples',
-		},
+		// {
+		// 	title: 'Examples',
+		// 	href: '/examples',
+		// },
 		{
 			title: 'GitHub',
 			href: 'https://github.com/BryanBerger98/datepicker',
@@ -48,13 +48,13 @@ export const docsConfig: DocsConfig = {
 					items: [],
 				},
 				{
-					title: 'Configuration',
-					href: '/docs/configuration',
+					title: 'Styling',
+					href: '/docs/styling',
 					items: [],
 				},
 				{
-					title: 'Styles',
-					href: '/docs/styles',
+					title: 'Configuration',
+					href: '/docs/configuration',
 					items: [],
 				},
 				{
@@ -65,21 +65,21 @@ export const docsConfig: DocsConfig = {
 			],
 		},
 		{
-			title: 'Calendars',
+			title: 'Selecting dates',
 			items: [
 				{
-					title: 'Simple',
-					href: '/docs/calendar/simple',
+					title: 'Single date',
+					href: '/docs/selecting-dates/single-date',
 					items: [],
 				},
 				{
-					title: 'Multiple months',
-					href: '/docs/calendar/multiple-months',
+					title: 'Multiple dates',
+					href: '/docs/selecting-dates/multiple-dates',
 					items: [],
 				},
 				{
-					title: 'Multiple dates selection',
-					href: '/docs/calendar/mutiple-dates-selection',
+					title: 'Range of dates',
+					href: '/docs/selecting-dates/range-of-dates',
 					items: [],
 				},
 			],
@@ -94,7 +94,7 @@ export const docsConfig: DocsConfig = {
 				},
 				{
 					title: 'Required',
-					href: '/docs/helpers/disabled',
+					href: '/docs/helpers/required',
 					items: [],
 				},
 				{
@@ -104,6 +104,16 @@ export const docsConfig: DocsConfig = {
 					disabled: true,
 				},
 				
+			],
+		},
+		{
+			title: 'Guides',
+			items: [
+				{
+					title: 'Multiple months',
+					href: '/docs/guides/multiple-months',
+					items: [],
+				},
 			],
 		},
 	],

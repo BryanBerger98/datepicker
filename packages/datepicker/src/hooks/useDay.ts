@@ -93,7 +93,7 @@ export const useDay = (dayDate: Date, currentDate: Date) => {
 				return isSame(dayDate, start);
 			}
 		}
-		return false;
+		return true;
 	};
 
 	const isLast = () => {
@@ -103,7 +103,7 @@ export const useDay = (dayDate: Date, currentDate: Date) => {
 				return isSame(dayDate, end);
 			}
 		}
-		return false;
+		return true;
 	};
 
 	const isToday = () => {

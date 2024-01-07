@@ -13,7 +13,10 @@
 		"commit": "git-cz",
 		"commit:all": "git add . && git-cz",
 		"prepare": "husky install",
-		"build:dp": "npm run build --workspace @bryanberger/datepicker"
+		"build:dp": "npm run build --workspace @bryanberger/datepicker",
+		"build:dev:dp": "npm run build --watch --workspace @bryanberger/datepicker",
+		"dev:docs": "npm run dev --workspace www",
+		"build:docs": "npm run build --workspace www"
 	},
 	"validate-branch-name": {
 		"pattern": "^(main|development|develop|staging){1}$|^(feat|fix|hotfix|release|chore|changeset-release)/.+$",

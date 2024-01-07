@@ -1,0 +1,93 @@
+---
+title: Single date selection
+description: For selecting one date at a time.
+---
+
+The default selection mode of the `Calendar` component is `single`. This means that only one date can be selected at a time.
+
+## Usage
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+			mode="single" // (optional when set to "single")
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+
+export default MyDatePicker;
+```
+
+<div className="flex justify-center">
+	<SingleCalendar />
+</div>
+
+## Default selected date
+
+You can set the default selected date by setting a `Date` object to the `defaultSelected` prop.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const MyDatePicker = () => {
+
+	const today = new Date();
+
+	return (
+		<Calendar
+			className="border rounded-md p-3"
+			mode="single"
+			defaultSelected={ today }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+<div className="flex justify-center">
+	<SingleCalendar2 />
+</div>
+
+## Control the selected date
+
+You can make the `Calendar` component controlled by passing the `selected` prop. You will then have to update the `selected` prop yourself by using the `onSelect` callback function.
+
+```tsx showLineNumbers
+import { Calendar } from '@bryanberger/datepicker';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+
+const MyDatePicker = () => {
+
+	const today = new Date();
+	const [selected, setSelected] = useState<Date>(today);
+
+	return (
+		<div>
+			<Calendar
+				className="border rounded-md p-3"
+				mode="single"
+				selected={ selected }
+				onSelect={ setSelected }
+			>
+				{ /* ... */ }
+			</Calendar>
+			<p>Selected date: { selected.toLocaleDateString() }</p>
+		</div>
+	);
+};
+```
+
+<div className="flex justify-center">
+	<SingleCalendar3 />
+</div>

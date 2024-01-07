@@ -1,0 +1,111 @@
+---
+title: Configuration
+description: Configure the behavior of your calendar.
+---
+
+## Calendar mode
+
+The calendar can be configured in 3 different modes through the `mode` prop with the following values:
+
+- `single` - **Default value**. The calendar will allow the user to select a single date. See [Simple selection](/docs/calendar/simple) for more information.
+- `multiple` - The calendar will allow the user to select multiple dates. See [Multiple dates selection](/docs/calendar/multiple-dates-selection) for more information.
+- `range` - The calendar will allow the user to select a range of dates. See [Range selection](/docs/calendar/range-selection) for more information.
+
+**Example of use:**
+
+```tsx
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			mode="range"
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## First day of the week
+
+The first day of the week can be configured through the `weekStartDay` prop with the following values:
+
+- `sunday` - **Default value**. 
+- `monday`.
+- `tuesday`.
+- `wednesday`.
+- `thursday`.
+- `friday`.
+- `saturday`.
+
+**Example of use:**
+
+```tsx
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			weekStartDay="monday"
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## Show outside days
+
+The calendar can be configured to show or hide the days outside the current month through the `boolean` prop named `showOutsideDates` when set to `true`.
+
+**Example of use:**
+
+```tsx showLineNumbers
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			showOutsideDates
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## Default month
+
+The calendar can be configured to show a specific month through the `defaultMonth` prop by passing a `Date` object.
+
+**Example of use:**
+
+```tsx showLineNumbers
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			defaultMonth={ new Date(2021, 0, 1) }
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```
+
+## Months range
+
+The calendar can be configured to set a selectable range of months through the `from` and `to` props by passing a `Date` object.
+
+```tsx showLineNumbers
+const MyCalendar = () => {
+
+	return (
+		<Calendar
+			defaultMonth={ new Date(2021, 0, 1) }
+			from={ new Date(2024, 0, 1) } // Starts on January 2024
+			to={ new Date(2024, 2, 29) } // Ends on March 2024
+		>
+			{ /* ... */ }
+		</Calendar>
+	);
+};
+```

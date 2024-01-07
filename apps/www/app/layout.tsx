@@ -2,6 +2,7 @@ import './globals.css';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import Footer from '@/components/nav/Footer';
 import Header from '@/components/nav/Header';
 import { siteConfig } from '@/config/site';
 
@@ -57,7 +58,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 				<div className="relative flex min-h-screen flex-col bg-background">
 					<Header />
 					<main className="flex-1">{ children }</main>
-					{ /* <SiteFooter /> */ }
+					<Footer />
 				</div>
 			</body>
 		</html>
