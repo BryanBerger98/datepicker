@@ -1,4 +1,6 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
@@ -60,6 +62,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 					<main className="flex-1">{ children }</main>
 					<Footer />
 				</div>
+				<SpeedInsights />
+				<Analytics />
 			</body>
 		</html>
 	);
