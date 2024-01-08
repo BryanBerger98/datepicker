@@ -1,6 +1,6 @@
 {
 	"name": "@bryanberger/datepicker",
-	"description": "React composable date picker inspired by react-day-picker.",
+	"description": "Flexible date picker for React. Composable. Customizable. Open Source.",
 	"version": "0.1.0",
 	"type": "module",
 	"author": {
