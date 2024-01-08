@@ -40,11 +40,11 @@ const Home = () => {
 					</Link>
 				</PageActions>
 			</PageHeader>
-			<section className="flex justify-center pt-8 pb-4 w-full gap-8">
+			<section className="flex flex-wrap justify-center pt-8 pb-4 w-full gap-8">
 				<SimpleDatePicker />
 				<MultipleMonthsCalendar />
 			</section>
-			<section className="flex justify-center pb-8 w-full gap-8">
+			<section className="flex flex-wrap justify-center pb-8 w-full gap-8">
 				<MultipleDatesSelectionCalendar />
 				<RangeSelectionCalendar />
 				<DisabledCalendar />

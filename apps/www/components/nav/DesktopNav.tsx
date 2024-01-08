@@ -8,7 +8,6 @@ import * as React from 'react';
 import { docsConfig } from '@/config/docs';
 import { siteConfig } from '@/config/site';
 
-import Icons from '../icons';
 import LogoIcon from '../icons/logo';
 
 const DesktopNav = () => {
@@ -40,25 +39,6 @@ const DesktopNav = () => {
 							href={ item.href }
 						>
 							{ item.title }
-						</Link>
-					) : null)
-				}
-			</nav>
-			<nav className="flex items-center ml-auto gap-4">
-				{
-					docsConfig.mainNav.filter((item) => item.external).map((item) => item.href ? (
-						<Link
-							key={ item.href }
-							aria-disabled={ item.disabled }
-							className={ cn(
-								'transition-colors hover:text-foreground/80 [aria-disabled=true]:text-foreground/50 [aria-disabled=true]:hover:text-foreground/50 [aria-disabled=true]:pointer-events-none',
-								pathname?.startsWith(item.href)
-									? 'text-foreground'
-									: 'text-foreground/60'
-							) }
-							href={ item.href }
-						>
-							{ item.icon ? Icons[ item.icon ] : item.title }
 						</Link>
 					) : null)
 				}
