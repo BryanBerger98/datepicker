@@ -10,7 +10,7 @@ const MultipleMonthsCalendar = () => {
 		<div className="space-y-4">
 			<Label>Multiple months calendar</Label>
 			<Calendar
-				className="rounded-md border p-3 !flex-row gap-4"
+				className="rounded-md border p-3 md:!flex-row gap-4"
 				defaultSelected={ new Date() }
 				weekStartDay="monday"
 				showOutsideDates
